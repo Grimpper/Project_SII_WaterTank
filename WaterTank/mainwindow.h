@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "tank.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +18,17 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    Tank* tank;
+
+private slots:
+    void setMaxLevel();
+    void setInitLevel();
+
+    void setMaxTemperature();
+    void setInitTemperature();
+
+    void setBaseRadius();
+
 };
 #endif // MAINWINDOW_H
