@@ -58,3 +58,16 @@ void MainWindow::setBaseRadius()
 
     qDebug() << "baseRadius";
 }
+
+void MainWindow::setMaxFlow()
+{
+    pump->maxFlow = ui->spinBox_EntranceFlow->value();
+    ui->label_MaxFlow_Value->setText(QString::number(pump->maxFlow,'f',3)+"  L/s");
+}
+
+
+void MainWindow::setInitPumpTemperature()
+{
+    pump->initTemperaturePump = ui->spinBox_EntranceTemp->value();
+    ui->label_EntranceTemp_Value->setText(QString::number(pump->initTemperaturePump));
+}

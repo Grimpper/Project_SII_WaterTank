@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "tank.h"
+#include "pump.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,7 +22,11 @@ private:
 
     Tank* tank;
 
+    Pump* pump;
+
 private slots:
+
+   // Slots Tank
     void setMaxLevel();
     void setInitLevel();
 
@@ -29,6 +34,13 @@ private slots:
     void setInitTemperature();
 
     void setBaseRadius();
+
+    //Slots Pump
+
+    void setMaxFlow();
+  //  void setInitFlow(); (not necessary)??
+
+    void setInitPumpTemperature();
 
 };
 #endif // MAINWINDOW_H

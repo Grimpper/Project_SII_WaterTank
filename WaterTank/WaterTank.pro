@@ -11,10 +11,12 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    pump.cpp \
     tank.cpp
 
 HEADERS += \
     mainwindow.h \
+    pump.h \
     tank.h
 
 FORMS += \
