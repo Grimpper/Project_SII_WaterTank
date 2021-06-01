@@ -27,28 +27,36 @@ void MainWindow::setMaxLevel()
 {
     tank->maxLevel = ui->spinBox_MaxLevel->value();
 
+#if WT_DEBUG == 1
     qDebug() << "maxLevelSet";
+#endif
 }
 
 void MainWindow::setInitLevel()
 {
     tank->initLevel = ui->spinBox_InitLevel->value();
 
+#if WT_DEBUG == 1
     qDebug() << "initLevel";
+#endif
 }
 
 void MainWindow::setMaxTemperature()
 {
     tank->maxTemperature = ui->spinBox_MaxTemp->value();
 
+#if WT_DEBUG == 1
     qDebug() << "maxTemperature";
+#endif
 }
 
 void MainWindow::setInitTemperature()
 {
     tank->initTemperature = ui->spinBox_InitTemp->value();
 
+#if WT_DEBUG == 1
     qDebug() << "initTemperature";
+#endif
 }
 
 void MainWindow::setBaseRadius()
@@ -56,5 +64,7 @@ void MainWindow::setBaseRadius()
     tank->baseRadius = ui->spinBox_BaseRadius->value();
     ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * tank->baseRadius, 'f', 2) + " m^2");
 
+#if WT_DEBUG == 1
     qDebug() << "baseRadius";
+#endif
 }
