@@ -7,7 +7,7 @@ class Pump
 public:
     Pump();
 
-    unsigned int initFlow, maxFlow;
+    unsigned int  maxFlow;
     int initTemperaturePump;
 
     unsigned int getFlow() const;

@@ -29,17 +29,13 @@ private slots:
    // Slots Tank
     void setMaxLevel();
     void setInitLevel();
-
     void setMaxTemperature();
     void setInitTemperature();
-
     void setBaseRadius();
 
     //Slots Pump
 
     void setMaxFlow();
-  //  void setInitFlow(); (not necessary)??
-
     void setInitPumpTemperature();
 
 };

@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->spinBox_MaxTemp, SIGNAL(valueChanged(int)), this, SLOT(setMaxTemperature()));
     connect(ui->spinBox_InitTemp, SIGNAL(valueChanged(int)), this, SLOT(setInitTemperature()));
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(setBaseRadius()));
+
+    connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
+    connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
+
 }
 
 MainWindow::~MainWindow()
@@ -62,12 +66,13 @@ void MainWindow::setBaseRadius()
 void MainWindow::setMaxFlow()
 {
     pump->maxFlow = ui->spinBox_EntranceFlow->value();
-    ui->label_MaxFlow_Value->setText(QString::number(pump->maxFlow,'f',3)+"  L/s");
+    ui->label_MaxFlow_Value->setText(QString::number(pump->maxFlow)+"  L/s"); //auxiliar label
 }
 
 
 void MainWindow::setInitPumpTemperature()
 {
     pump->initTemperaturePump = ui->spinBox_EntranceTemp->value();
-    ui->label_EntranceTemp_Value->setText(QString::number(pump->initTemperaturePump));
+    ui->label_EntranceTemp_Value->setText(QString::number(pump->initTemperaturePump)+ " ºC");  //auxiliar label
 }
+

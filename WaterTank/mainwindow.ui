@@ -30,11 +30,11 @@
      <enum>QTabWidget::Triangular</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Simulación</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_Time">
       <property name="geometry">
@@ -356,7 +356,7 @@
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Configuración</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_Pump_Entrance">
       <property name="geometry">
