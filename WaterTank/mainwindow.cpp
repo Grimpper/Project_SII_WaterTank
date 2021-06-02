@@ -43,9 +43,9 @@ void MainWindow::setDrawing()
     EnumOverFlow overFlow = readOverFlow();
 */
 
-    double imageWhiteMaskHeight = level * (10-305.0)/8000.0 + 305;
-    double imageWaterFlowHeight = level * (10-305.0)/8000.0 + 305;
-    double imageThermometerMaskHeight = (temperature + 20) * -137.0/(120.0+20.0) + 137.0;
+    double imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
+    double imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
+    double imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
 
     if(imageWhiteMaskHeight < 10){
             imageWhiteMaskHeight = 10;
