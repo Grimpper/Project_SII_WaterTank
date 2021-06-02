@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include "tank.h"
@@ -20,23 +19,25 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    Tank* tank;
+    Tank tank;
 
-    Pump* pump;
+    Pump pump;
 
 private slots:
 
-   // Slots Tank
+   // Tank Slots
     void setMaxLevel();
     void setInitLevel();
     void setMaxTemperature();
     void setInitTemperature();
     void setBaseRadius();
 
-    //Slots Pump
-
+    //Pump Slots
     void setMaxFlow();
     void setInitPumpTemperature();
 
+private:
+    void connectQtElements();
+    void setDrawing();
+
 };
-#endif // MAINWINDOW_H

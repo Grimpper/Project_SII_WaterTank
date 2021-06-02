@@ -1,6 +1,4 @@
-#ifndef PUMP_H
-#define PUMP_H
-
+#pragma once
 
 class Pump
 {
@@ -20,5 +18,3 @@ private:
     unsigned int flow;
     int pumpTemperature;
 };
-
-#endif // PUMP_H
