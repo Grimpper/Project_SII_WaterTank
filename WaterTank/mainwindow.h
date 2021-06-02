@@ -30,5 +30,8 @@ private slots:
 
     void setBaseRadius();
 
+private:
+    void setDrawing();
+
 };
 #endif // MAINWINDOW_H
