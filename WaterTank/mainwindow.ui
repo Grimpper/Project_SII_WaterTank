@@ -34,7 +34,7 @@
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Tab 1</string>
+      <string>Simulación</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_Time">
       <property name="geometry">
@@ -109,6 +109,9 @@
          <width>331</width>
          <height>22</height>
         </rect>
+       </property>
+       <property name="maximum">
+        <number>100</number>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -353,7 +356,7 @@
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Configuración</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_Pump_Entrance">
       <property name="geometry">

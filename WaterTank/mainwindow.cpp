@@ -29,12 +29,16 @@ void MainWindow::connectQtElements()
     connect(ui->spinBox_MaxTemp, SIGNAL(valueChanged(int)), this, SLOT(setMaxTemperature()));
     connect(ui->spinBox_InitTemp, SIGNAL(valueChanged(int)), this, SLOT(setInitTemperature()));
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(setBaseRadius()));
+
+    connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
+    connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
+
 }
 
 void MainWindow::setDrawing()
 {
-    int level = tank->getLevel();
-    int temperature = tank->getTemperature();
+    int level = tank.getLevel();
+    int temperature = tank.getTemperature();
     //double pump = ;
 /*
     EnumHeater heater = readHeaterState();
@@ -113,46 +117,66 @@ void MainWindow::setDrawing()
 
 void MainWindow::setMaxLevel()
 {
-    tank->maxLevel = ui->spinBox_MaxLevel->value();
+    tank.maxLevel = ui->spinBox_MaxLevel->value();
 
 #if WT_DEBUG == 1
-    qDebug() << "maxLevelSet";
+    qDebug() << "maxLevelSet = " + QString::number(tank.maxLevel);
 #endif
 }
 
 void MainWindow::setInitLevel()
 {
-    tank->initLevel = ui->spinBox_InitLevel->value();
+    tank.initLevel = ui->spinBox_InitLevel->value();
 
 #if WT_DEBUG == 1
-    qDebug() << "initLevel";
+    qDebug() << "initLevel = " + QString::number(tank.initLevel);
 #endif
 }
 
 void MainWindow::setMaxTemperature()
 {
-    tank->maxTemperature = ui->spinBox_MaxTemp->value();
+    tank.maxTemperature = ui->spinBox_MaxTemp->value();
 
 #if WT_DEBUG == 1
-    qDebug() << "maxTemperature";
+    qDebug() << "maxTemperature = " + QString::number(tank.maxTemperature);
 #endif
 }
 
 void MainWindow::setInitTemperature()
 {
-    tank->initTemperature = ui->spinBox_InitTemp->value();
+    tank.initTemperature = ui->spinBox_InitTemp->value();
 
 #if WT_DEBUG == 1
-    qDebug() << "initTemperature";
+    qDebug() << "initTemperature = " + QString::number(tank.initTemperature);
 #endif
 }
 
 void MainWindow::setBaseRadius()
 {
-    tank->baseRadius = ui->spinBox_BaseRadius->value();
-    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * tank->baseRadius, 'f', 2) + " m^2");
+    tank.baseRadius = ui->spinBox_BaseRadius->value();
+    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * tank.baseRadius, 'f', 2) + " m^2");
 
 #if WT_DEBUG == 1
-    qDebug() << "baseRadius";
+    qDebug() << "baseRadius = " + QString::number(tank.baseRadius);
 #endif
 }
+
+void MainWindow::setMaxFlow()
+{
+    pump.maxFlow = ui->spinBox_EntranceFlow->value();
+
+#if WT_DEBUG == 1
+    qDebug() << "maxFlow = " + QString::number(pump.maxFlow);
+#endif
+}
+
+
+void MainWindow::setInitPumpTemperature()
+{
+    pump.initTemperaturePump = ui->spinBox_EntranceTemp->value();
+
+#if WT_DEBUG == 1
+    qDebug() << "initTemperaturePump = " + QString::number(pump.initTemperaturePump);
+#endif
+}
+
