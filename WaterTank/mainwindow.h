@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include "tank.h"
@@ -35,4 +34,3 @@ private:
     void setDrawing();
 
 };
-#endif // MAINWINDOW_H
