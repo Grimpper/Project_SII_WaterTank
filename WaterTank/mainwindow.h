@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include "tank.h"
 #include "pump.h"
+#include "valve.h"
+#include "heater.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +25,10 @@ private:
 
     Pump pump;
 
+    valve  valve;
+
+    heater heater;
+
 private slots:
 
    // Tank Slots
@@ -35,6 +41,18 @@ private slots:
     //Pump Slots
     void setMaxFlow();
     void setInitPumpTemperature();
+
+    //Valve slots
+    void setExitRadius();
+    void setExitConnection();
+    void setValveOpen();
+    void setValveClose();
+
+    //Heater slot
+    void setHeaterTemp();
+    void setHeaterOn();
+    void setHeaterOff();
+
 
 private:
     void connectQtElements();
