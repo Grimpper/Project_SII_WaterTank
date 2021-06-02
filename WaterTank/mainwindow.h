@@ -31,6 +31,7 @@ private slots:
     void setBaseRadius();
 
 private:
+    void connectQtElements();
     void setDrawing();
 
 };

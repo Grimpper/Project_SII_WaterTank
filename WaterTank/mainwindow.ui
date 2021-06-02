@@ -1033,7 +1033,7 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="groupBox_GUI">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -1041,6 +1041,9 @@
       <width>351</width>
       <height>531</height>
      </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
     </property>
     <property name="title">
      <string/>
@@ -1077,7 +1080,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/TankWhiteMask.jpg</pixmap>
+      <pixmap>:/resources/Images/TankWhiteMask.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1096,7 +1099,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/OverFlow.jpg</pixmap>
+      <pixmap>:/resources/Images/OverFlow.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1115,7 +1118,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/TankValveOpen.jpg</pixmap>
+      <pixmap>:/resources/Images/TankValveOpen.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1134,7 +1137,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/Flames.jpg</pixmap>
+      <pixmap>:/resources/Images/Flames.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1153,7 +1156,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/WaterFlow.jpg</pixmap>
+      <pixmap>:/resources/Images/WaterFlow.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1191,7 +1194,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/Thermometer.jpg</pixmap>
+      <pixmap>:/resources/Images/Thermometer.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1210,7 +1213,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/OverHeat.jpg</pixmap>
+      <pixmap>:/resources/Images/OverHeat.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1229,7 +1232,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/TankValveClosed.jpg</pixmap>
+      <pixmap>:/resources/Images/TankValveClosed.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1248,7 +1251,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="images.qrc">:/resources/Images/ThermWhiteMask.jpg</pixmap>
+      <pixmap>:/resources/Images/ThermWhiteMask.jpg</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1279,8 +1282,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
