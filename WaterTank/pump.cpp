@@ -2,7 +2,10 @@
 
 Pump::Pump()
 {
-
+    maxFlow = 0;
+    initTemperaturePump = 0;
+    flow = 0;
+    pumpTemperature = 0;
 }
 
 unsigned int Pump::getFlow() const
