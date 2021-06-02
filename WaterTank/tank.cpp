@@ -10,7 +10,17 @@ unsigned int Tank::getLevel() const
     return level;
 }
 
+void Tank::setLevel(unsigned int value)
+{
+    level = value;
+}
+
 int Tank::getTemperature() const
 {
     return temperature;
+}
+
+void Tank::setTemperature(int value)
+{
+    temperature = value;
 }

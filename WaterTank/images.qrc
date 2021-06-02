@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>Images/Flames.jpg</file>
+        <file>Images/OverFlow.jpg</file>
+        <file>Images/OverHeat.jpg</file>
+        <file>Images/TankValveClosed.jpg</file>
+        <file>Images/TankValveOpen.jpg</file>
+        <file>Images/TankWhiteMask.jpg</file>
+        <file>Images/Thermometer.jpg</file>
+        <file>Images/ThermWhiteMask.jpg</file>
+        <file>Images/WaterFlow.jpg</file>
+    </qresource>
+</RCC>

@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 #include "tank.h"
@@ -38,5 +37,8 @@ private slots:
     void setMaxFlow();
     void setInitPumpTemperature();
 
+private:
+    void connectQtElements();
+    void setDrawing();
+
 };
-#endif // MAINWINDOW_H

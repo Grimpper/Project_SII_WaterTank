@@ -1,6 +1,4 @@
-#ifndef TANK_H
-#define TANK_H
-
+#pragma once
 
 class Tank
 {
@@ -13,11 +11,12 @@ public:
     int initTemperature, maxTemperature;
 
     unsigned int getLevel() const;
+    void setLevel(unsigned int value);
+
     int getTemperature() const;
+    void setTemperature(int value);
 
 private:
     unsigned int level;
     int temperature;
 };
-
-#endif // TANK_H
