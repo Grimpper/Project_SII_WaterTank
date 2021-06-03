@@ -16,7 +16,12 @@ public:
     int getTemperature() const;
     void setTemperature(int value);
 
+    bool getOverheat() const;
+    bool getOverflow() const;
+
 private:
     unsigned int level;
     int temperature;
+
+    bool overheat, overflow;
 };

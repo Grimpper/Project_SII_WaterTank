@@ -8,6 +8,8 @@ Tank::Tank()
     initTemperature = 0;
     maxTemperature = 0;
     enviromentalTemp = 0;
+    overflow = 0;
+    overheat = 0;
 }
 
 unsigned int Tank::getLevel() const
@@ -18,6 +20,9 @@ unsigned int Tank::getLevel() const
 void Tank::setLevel(unsigned int value)
 {
     level = value;
+
+    if (level > maxLevel)
+        overflow = true;
 }
 
 int Tank::getTemperature() const
@@ -28,4 +33,17 @@ int Tank::getTemperature() const
 void Tank::setTemperature(int value)
 {
     temperature = value;
+
+    if (temperature > maxTemperature)
+        overheat = true;
+}
+
+bool Tank::getOverheat() const
+{
+    return overheat;
+}
+
+bool Tank::getOverflow() const
+{
+    return overflow;
 }
