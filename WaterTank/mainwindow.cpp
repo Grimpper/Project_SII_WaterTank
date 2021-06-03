@@ -32,14 +32,13 @@ void MainWindow::connectQtElements()
 
     connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
     connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
-
 }
 
 void MainWindow::setDrawing()
 {
-    int level = tank.getLevel();
+    unsigned int level = tank.getLevel();
     int temperature = tank.getTemperature();
-    //double pump = ;
+    unsigned int pump = this->pump.getFlow();
 /*
     EnumHeater heater = readHeaterState();
     EnumValve valve = readValveState();
@@ -74,15 +73,14 @@ void MainWindow::setDrawing()
     ui->ImageThermometerMask->resize(ui->ImageThermometerMask->size().width(), imageThermometerMaskHeight);
 
 
-/*
-    if(pump > 0){
-            FormUser->ImageWaterFlow->Visible = true;
-            FormUser->ImageWhiteMask->Visible = false;
+    if(pump){
+        ui->ImageWaterFlow->setVisible(true);
+        ui->ImageWhiteMask->setVisible(false);
     } else {
-            FormUser->ImageWaterFlow->Visible = false;
-            FormUser->ImageWhiteMask->Visible = true;
+        ui->ImageWaterFlow->setVisible(false);
+        ui->ImageWhiteMask->setVisible(true);
     }
-
+/*
     if(valve == Valve_OPEN){
             FormUser->ImageTankValveOpen->Visible = true;
             FormUser->ImageTankValveClose->Visible = false;
@@ -96,23 +94,22 @@ void MainWindow::setDrawing()
     } else {
             FormUser->ImageFlame->Visible = false;
     }
-
-    if(overHeat == OverHeat_YES){
-            FormUser->ImageOverHeat->Visible = true;
-            FormUser->LabelOverHeat->Visible = true;
-    } else {
-            FormUser->ImageOverHeat->Visible = false;
-            FormUser->LabelOverHeat->Visible = false;
-    }
-
-    if(overFlow == OverFlow_YES){
-            FormUser->ImageOverFlow->Visible = true;
-            FormUser->LabelOverFlow->Visible = true;
-    } else {
-            FormUser->ImageOverFlow->Visible = false;
-            FormUser->LabelOverFlow->Visible = false;
-    }
 */
+    if(tank.getOverheat()){
+        ui->ImageOverheat->setVisible(true);
+        ui->label_Overheat->setVisible(true);
+    } else {
+        ui->ImageOverheat->setVisible(false);
+        ui->label_Overheat->setVisible(false);
+    }
+
+    if(tank.getOverflow()){
+        ui->ImageOverflow->setVisible(true);
+        ui->label_Overflow->setVisible(true);
+    } else {
+        ui->ImageOverflow->setVisible(false);
+        ui->label_Overflow->setVisible(false);
+    }
 }
 
 void MainWindow::setMaxLevel()
