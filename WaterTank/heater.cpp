@@ -2,6 +2,6 @@
 
 Heater::Heater()
 {
-    state = HEATER_ON;
+    state = HEATER_OFF;
     heaterTemp = 0 ;
 }
