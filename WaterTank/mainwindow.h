@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QTimer>
 #include "tank.h"
 #include "pump.h"
 #include "valve.h"
@@ -19,6 +20,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QTimer* drawTimer;
 
     Tank tank;
 
@@ -29,8 +31,10 @@ private:
     Heater heater;
 
 private slots:
+    // Timer
+    void setDrawing();
 
-   // Tank Slots
+   // Tank
     void setMaxLevel();
     void setInitLevel();
     void setMaxTemperature();
@@ -38,22 +42,20 @@ private slots:
     void setBaseRadius();
     void setEnviromentalTemp();
 
-    //Pump Slots
+    //Pump
     void setMaxFlow();
     void setInitPumpTemperature();
 
-    //Valve slots
+    //Valve
     void setValveState();
     void setExitRadius();
     void setExitConnection();
 
-    //Heater slot
+    //Heater
     void setHeaterState();
     void setHeaterTemp();
 
-
 private:
     void connectQtElements();
-    void setDrawing();
 
 };
