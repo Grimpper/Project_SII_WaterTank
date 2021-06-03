@@ -32,6 +32,7 @@ void MainWindow::connectQtElements()
     connect(ui->spinBox_MaxTemp, SIGNAL(valueChanged(int)), this, SLOT(setMaxTemperature()));
     connect(ui->spinBox_InitTemp, SIGNAL(valueChanged(int)), this, SLOT(setInitTemperature()));
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(setBaseRadius()));
+    connect(ui->spinBox_EnviromentalTemp, SIGNAL(valueChanged(int)), this, SLOT(setEnviromentalTemp()));
 
     connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
     connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
@@ -172,6 +173,16 @@ void MainWindow::setBaseRadius()
     qDebug() << "baseRadius = " + QString::number(tank.baseRadius);
 #endif
 }
+
+void MainWindow::setEnviromentalTemp()
+{
+    tank.enviromentalTemp = ui->spinBox_EnviromentalTemp->value();
+
+#if WT_DEBUG == 1
+    qDebug() << "enviromentalTemp = " + QString::number(tank.enviromentalTemperature);
+#endif
+}
+
 
 void MainWindow::setMaxFlow()
 {

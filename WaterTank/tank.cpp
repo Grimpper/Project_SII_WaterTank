@@ -7,6 +7,7 @@ Tank::Tank()
     baseRadius = 0;
     initTemperature = 0;
     maxTemperature = 0;
+    enviromentalTemp = 0;
 }
 
 unsigned int Tank::getLevel() const

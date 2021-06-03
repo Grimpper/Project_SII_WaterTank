@@ -25,9 +25,9 @@ private:
 
     Pump pump;
 
-    valve  valve;
+    Valve  valve;
 
-    heater heater;
+    Heater heater;
 
 private slots:
 
@@ -37,6 +37,7 @@ private slots:
     void setMaxTemperature();
     void setInitTemperature();
     void setBaseRadius();
+    void setEnviromentalTemp();
 
     //Pump Slots
     void setMaxFlow();

@@ -1,11 +1,9 @@
-#ifndef VALVE_H
-#define VALVE_H
+#pragma once
 
-
-class valve
+class Valve
 {
 public:
-    valve();
+    Valve();
 
     unsigned int exitRadius;
     unsigned int exitConnection;
@@ -16,8 +14,16 @@ public:
        valve_CLOSE
     };
 
-    EnumValve readValveState() const;
+    void setValveOpen();
+    void setValveClose();
+
+
+    EnumValve getValveState() const;
+
+private:
+
+    EnumValve valveState;
+
 
 };
 
-#endif // VALVE_H

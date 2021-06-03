@@ -1,23 +1,28 @@
-#ifndef HEATER_H
-#define HEATER_H
+#pragma once
 
-
-class heater
+class Heater
 {
 public:
-    heater();
+   Heater();
 
     int heaterTemp;
+
     enum EnumHeater
     {
        heater_ON,
        heater_OFF
     };
 
-    EnumHeater readHeaterState() const;
+    int getHeaterTemp() const;
+    void setHeaterTemp(int value);
+    void setHeaterOn();
+    void setHeaterOff();
 
 
+    EnumHeater getHeaterState() const;
+
+private:
+
+    EnumHeater heaterState;
 
 };
-
-#endif // HEATER_H

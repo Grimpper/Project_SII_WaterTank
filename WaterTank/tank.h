@@ -8,7 +8,7 @@ public:
     unsigned int initLevel, maxLevel;
     unsigned int baseRadius;
 
-    int initTemperature, maxTemperature;
+    int initTemperature, maxTemperature, enviromentalTemp;
 
     unsigned int getLevel() const;
     void setLevel(unsigned int value);
