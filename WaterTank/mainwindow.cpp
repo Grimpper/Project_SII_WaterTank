@@ -179,7 +179,7 @@ void MainWindow::setEnviromentalTemp()
     tank.enviromentalTemp = ui->spinBox_EnviromentalTemp->value();
 
 #if WT_DEBUG == 1
-    qDebug() << "enviromentalTemp = " + QString::number(tank.enviromentalTemperature);
+    qDebug() << "enviromentalTemp = " + QString::number(tank.enviromentalTemp);
 #endif
 }
 
