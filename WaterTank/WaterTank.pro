@@ -9,15 +9,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    heater.cpp \
     main.cpp \
     mainwindow.cpp \
     pump.cpp \
-    tank.cpp
+    tank.cpp \
+    valve.cpp
 
 HEADERS += \
+    heater.h \
     mainwindow.h \
     pump.h \
-    tank.h
+    tank.h \
+    valve.h
 
 FORMS += \
     mainwindow.ui
