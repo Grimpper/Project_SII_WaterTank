@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectQtElements()
 {
+    //  TANK  //
     connect(ui->spinBox_MaxLevel, SIGNAL(valueChanged(int)), this, SLOT(setMaxLevel()));
     connect(ui->spinBox_InitLevel, SIGNAL(valueChanged(int)), this, SLOT(setInitLevel()));
     connect(ui->spinBox_MaxTemp, SIGNAL(valueChanged(int)), this, SLOT(setMaxTemperature()));
@@ -34,18 +35,41 @@ void MainWindow::connectQtElements()
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(setBaseRadius()));
     connect(ui->spinBox_EnviromentalTemp, SIGNAL(valueChanged(int)), this, SLOT(setEnviromentalTemp()));
 
+    //  PUMP  //
     connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
     connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
 
+    //  VALVE  //
+    connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
+    connect(ui->pushButton_Valve_Open, SIGNAL(clicked()), this, SLOT(setValveState()));
+
     connect(ui->spinBox_ExitRadius, SIGNAL(valueChanged(int)), this, SLOT(setExitRadius()));
     connect(ui->spinBox_ExitConnection, SIGNAL(valueChanged(int)), this, SLOT(setExitConnection()));
-    connect(ui->pushButton_Pump_Open, SIGNAL(clicked()), this, SLOT(setValveOpen()));
-    connect(ui->pushButton_Pump_Close, SIGNAL(clicked()), this, SLOT(setValveClose()));
 
+    //  HEATER  //
+    connect(ui->pushButton_Heater_Off, SIGNAL(clicked()), this, SLOT(setHeaterState()));
+    connect(ui->pushButton_Heater_On, SIGNAL(clicked()), this, SLOT(setHeaterState()));
     connect(ui->spinBox_HeaterTemp, SIGNAL(valueChanged(int)), this, SLOT(setHeaterTemp()));
-    connect(ui->pushButton_Heater_On, SIGNAL(clicked()), this, SLOT(setHeaterOn()));
-    connect(ui->pushButton_Heater_Off, SIGNAL(clicked()), this, SLOT(setHeaterOff()));
+}
 
+void MainWindow::setValveState()
+{
+    valve.state = sender() == ui->pushButton_Valve_Open ? Valve::VALVE_OPEN : Valve::VALVE_CLOSE;
+
+#if WT_DEBUG == 1
+    QString str = valve.state ? "OPEN" : "CLOSE";
+    qDebug() << "valveState = " + str;
+#endif
+}
+
+void MainWindow::setHeaterState()
+{
+    heater.state = sender() == ui->pushButton_Heater_On ? Heater::HEATER_ON : Heater::HEATER_OFF;
+
+#if WT_DEBUG == 1
+    QString str = heater.state ? "ON" : "OFF";
+    qDebug() << "heaterState = " + str;
+#endif
 }
 
 void MainWindow::setDrawing()
@@ -220,25 +244,6 @@ void MainWindow::setExitConnection()
     qDebug() << "exitConnection = " + QString::number(valve.exitConnection);
 #endif
 }
-void MainWindow::setValveOpen()
-{
-    ui->label_ValveState->setText("OPEN");
-
-
-#if WT_DEBUG == 1
-    qDebug() << "Valve Open ";
-#endif
-}
-
-void MainWindow::setValveClose()
-{
-    ui->label_ValveState->setText("CLOSE");
-
-#if WT_DEBUG == 1
-    qDebug() << "Valve close";
-#endif
-}
-
 
 void MainWindow::setHeaterTemp()
 {
@@ -248,27 +253,3 @@ void MainWindow::setHeaterTemp()
     qDebug() << "heaterTemp = " + QString::number(heater.heaterTemp);
 #endif
 }
-
-
-void MainWindow::setHeaterOn()
-{
-    ui->label_HeaterState->setText("ON");
-
-#if WT_DEBUG == 1
-    qDebug() << "Heater On ";
-#endif
-}
-
-void MainWindow::setHeaterOff()
-{
-    ui->label_HeaterState->setText("OFF");
-
-#if WT_DEBUG == 1
-    qDebug() << "Heater Off ";
-#endif
-}
-
-
-
-
-

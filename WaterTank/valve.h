@@ -5,25 +5,13 @@ class Valve
 public:
     Valve();
 
-    unsigned int exitRadius;
-    unsigned int exitConnection;
-
     enum EnumValve
     {
-       valve_OPEN,
-       valve_CLOSE
-    };
+       VALVE_CLOSE,
+       VALVE_OPEN
+    } state;
 
-    void setValveOpen();
-    void setValveClose();
-
-
-    EnumValve getValveState() const;
-
-private:
-
-    EnumValve valveState;
-
-
+    unsigned int exitRadius;
+    unsigned int exitConnection;
 };
 

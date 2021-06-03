@@ -13,7 +13,6 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -44,15 +43,13 @@ private slots:
     void setInitPumpTemperature();
 
     //Valve slots
+    void setValveState();
     void setExitRadius();
     void setExitConnection();
-    void setValveOpen();
-    void setValveClose();
 
     //Heater slot
+    void setHeaterState();
     void setHeaterTemp();
-    void setHeaterOn();
-    void setHeaterOff();
 
 
 private:

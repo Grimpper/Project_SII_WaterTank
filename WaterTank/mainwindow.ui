@@ -254,7 +254,7 @@
       <property name="title">
        <string>Válvula</string>
       </property>
-      <widget class="QPushButton" name="pushButton_Pump_Open">
+      <widget class="QPushButton" name="pushButton_Valve_Open">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -267,7 +267,7 @@
         <string>Abrir</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_Pump_Close">
+      <widget class="QPushButton" name="pushButton_Valve_Close">
        <property name="geometry">
         <rect>
          <x>130</x>
@@ -278,25 +278,6 @@
        </property>
        <property name="text">
         <string>Cerrar</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_ValveState">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>30</y>
-         <width>91</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>DejaVu Sans Light</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Estado</string>
        </property>
       </widget>
      </widget>
@@ -369,25 +350,6 @@
        </property>
        <property name="text">
         <string>Apagar</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_HeaterState">
-       <property name="geometry">
-        <rect>
-         <x>250</x>
-         <y>20</y>
-         <width>91</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>DejaVu Sans Light</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Estado</string>
        </property>
       </widget>
      </widget>
@@ -1317,7 +1279,7 @@
      <x>0</x>
      <y>0</y>
      <width>821</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
