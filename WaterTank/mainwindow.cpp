@@ -222,6 +222,7 @@ void MainWindow::setExitConnection()
 }
 void MainWindow::setValveOpen()
 {
+    ui->label_ValveState->setText("OPEN");
 
 
 #if WT_DEBUG == 1
@@ -231,6 +232,7 @@ void MainWindow::setValveOpen()
 
 void MainWindow::setValveClose()
 {
+    ui->label_ValveState->setText("CLOSE");
 
 #if WT_DEBUG == 1
     qDebug() << "Valve close";
@@ -250,7 +252,7 @@ void MainWindow::setHeaterTemp()
 
 void MainWindow::setHeaterOn()
 {
-
+    ui->label_HeaterState->setText("ON");
 
 #if WT_DEBUG == 1
     qDebug() << "Heater On ";
@@ -259,6 +261,7 @@ void MainWindow::setHeaterOn()
 
 void MainWindow::setHeaterOff()
 {
+    ui->label_HeaterState->setText("OFF");
 
 #if WT_DEBUG == 1
     qDebug() << "Heater Off ";
