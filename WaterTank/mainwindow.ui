@@ -1203,7 +1203,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="ImageOverHeat">
+    <widget class="QLabel" name="ImageOverheat">
      <property name="geometry">
       <rect>
        <x>212</x>
@@ -1268,7 +1268,7 @@
     <zorder>ImageFlame</zorder>
     <zorder>ImageWaterFlow</zorder>
     <zorder>label_Overflow</zorder>
-    <zorder>ImageOverHeat</zorder>
+    <zorder>ImageOverheat</zorder>
     <zorder>ImageThermometerMask</zorder>
     <zorder>ImageWhiteMask</zorder>
    </widget>
