@@ -1,4 +1,5 @@
 #include "tank.h"
+#include <QDebug>
 
 Tank::Tank()
 {
@@ -23,6 +24,18 @@ Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
     this->enviromentTemp = enviromentTemp;
     this->overflow = 0;
     this->overheat = 0;
+
+#if WT_DEBUG == 1
+    QString str = "Tank initialized with:\n";
+    str += "maxLevel = " + QString::number(maxLevel) + "\n";
+    str += "level = " + QString::number(level) + "\n";
+    str += "maxTemperature = " + QString::number(maxTemperature) + "\n";
+    str += "temperature = " + QString::number(temperature) + "\n";
+    str += "baseRadius = " + QString::number(baseRadius) + "\n";
+    str += "enviromentTemp = " + QString::number(enviromentTemp) + "\n";
+
+    qDebug().noquote() << str;
+#endif
 }
 
 unsigned int Tank::getLevel() const

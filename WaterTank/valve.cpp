@@ -1,4 +1,5 @@
 #include "valve.h"
+#include <QDebug>
 
 Valve::Valve()
 {
@@ -12,6 +13,14 @@ Valve::Valve(unsigned int exitRadius, unsigned int exitConnection)
     state = VALVE_CLOSE;
     this->exitRadius = exitRadius;
     this->exitConnection = exitConnection;
+
+#if WT_DEBUG == 1
+    QString str = "Valve initialized with:\n";
+    str += "exitRadius = " + QString::number(exitRadius) + "\n";
+    str += "exitConnection = " + QString::number(exitConnection) + "\n";
+
+    qDebug().noquote() << str;
+#endif
 }
 
 unsigned int Valve::getExitRadius() const

@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     connectQtElements();
-    setDrawing();
 }
 
 MainWindow::~MainWindow()
@@ -32,7 +31,7 @@ void MainWindow::connectQtElements()
 {
     //  SIMULATION BUTTONS  //
     connect(ui->pushButton_Start, SIGNAL(clicked()), this, SLOT(start()));
-    connect(ui->pushButton_Stop, SIGNAL(clicked()), this, SLOT(stop()));
+    connect(ui->pushButton_Pause, SIGNAL(clicked()), this, SLOT(pause()));
     connect(ui->pushButton_Reset, SIGNAL(clicked()), this, SLOT(reset()));
 
     //  VALVE BUTTONS  //
@@ -47,7 +46,6 @@ void MainWindow::connectQtElements()
     drawTimer->setInterval(100);
     drawTimer->setSingleShot(false);
     connect(drawTimer, SIGNAL(timeout()), this, SLOT(setDrawing()));
-    drawTimer->start();
 }
 
 void MainWindow::setDrawing()
@@ -152,6 +150,8 @@ void MainWindow::setEnableConfig(bool state)
 
 void MainWindow::start()
 {
+    drawTimer->start();
+
     if (tank || pump || valve || heater) return;
 
     setEnableConfig(false);
@@ -167,12 +167,9 @@ void MainWindow::start()
 #endif
 }
 
-void MainWindow::stop()
+void MainWindow::pause()
 {
-    deletePointerMembers();
     drawTimer->stop();
-
-    setEnableConfig(true);
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STOPPED";
@@ -182,7 +179,7 @@ void MainWindow::stop()
 void MainWindow::reset()
 {
     deletePointerMembers();
-    start();
+    setEnableConfig(true);
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION RESETED";

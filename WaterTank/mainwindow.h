@@ -38,7 +38,7 @@ private slots:
     void setDrawing();
 
     void start();
-    void stop();
+    void pause();
     void reset();
 
     void setValveState();
