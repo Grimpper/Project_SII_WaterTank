@@ -4,6 +4,7 @@ class Valve
 {
 public:
     Valve();
+    Valve(unsigned int exitRadius, unsigned int exitConnection);
 
     enum EnumValve
     {
@@ -11,7 +12,11 @@ public:
        VALVE_OPEN
     } state;
 
-    unsigned int exitRadius;
-    unsigned int exitConnection;
+    unsigned int getExitRadius() const;
+
+    unsigned int getExitConnection() const;
+
+private:
+    unsigned int exitRadius, exitConnection;
 };
 

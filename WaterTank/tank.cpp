@@ -1,15 +1,41 @@
 #include "tank.h"
+#include <QDebug>
 
 Tank::Tank()
 {
-    initLevel = 0;
+    level = 0;
     maxLevel = 0;
     baseRadius = 0;
-    initTemperature = 0;
+    temperature = 0;
     maxTemperature = 0;
-    enviromentalTemp = 0;
+    enviromentTemp = 0;
     overflow = 0;
     overheat = 0;
+}
+
+Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
+           int temperature, unsigned int baseRadius, int enviromentTemp)
+{
+    this->setLevel(level);
+    this->maxLevel = maxLevel;
+    this->baseRadius = baseRadius;
+    this->setTemperature(temperature);
+    this->maxTemperature = maxTemperature;
+    this->enviromentTemp = enviromentTemp;
+    this->overflow = 0;
+    this->overheat = 0;
+
+#if WT_DEBUG == 1
+    QString str = "Tank initialized with:\n";
+    str += "maxLevel = " + QString::number(maxLevel) + "\n";
+    str += "level = " + QString::number(level) + "\n";
+    str += "maxTemperature = " + QString::number(maxTemperature) + "\n";
+    str += "temperature = " + QString::number(temperature) + "\n";
+    str += "baseRadius = " + QString::number(baseRadius) + "\n";
+    str += "enviromentTemp = " + QString::number(enviromentTemp) + "\n";
+
+    qDebug().noquote() << str;
+#endif
 }
 
 unsigned int Tank::getLevel() const
@@ -46,4 +72,24 @@ bool Tank::getOverheat() const
 bool Tank::getOverflow() const
 {
     return overflow;
+}
+
+unsigned int Tank::getMaxLevel() const
+{
+    return maxLevel;
+}
+
+unsigned int Tank::getBaseRadius() const
+{
+    return baseRadius;
+}
+
+int Tank::getMaxTemperature() const
+{
+    return maxTemperature;
+}
+
+int Tank::getEnviromentTemp() const
+{
+    return enviromentTemp;
 }
