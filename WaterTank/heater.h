@@ -13,9 +13,4 @@ public:
     } state;
 
     int temp;
-
-    int getInitHeaterTemp() const;
-
-private:
-    int initTemp;
 };

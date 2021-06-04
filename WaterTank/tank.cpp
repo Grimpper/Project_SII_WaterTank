@@ -2,23 +2,23 @@
 
 Tank::Tank()
 {
-    initLevel = 0;
+    level = 0;
     maxLevel = 0;
     baseRadius = 0;
-    initTemperature = 0;
+    temperature = 0;
     maxTemperature = 0;
     enviromentTemp = 0;
     overflow = 0;
     overheat = 0;
 }
 
-Tank::Tank(unsigned int maxLevel, unsigned int initLevel, int maxTemperature,
-           int initTemperature, unsigned int baseRadius, int enviromentTemp)
+Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
+           int temperature, unsigned int baseRadius, int enviromentTemp)
 {
-    this->initLevel = initLevel;
+    this->setLevel(level);
     this->maxLevel = maxLevel;
     this->baseRadius = baseRadius;
-    this->initTemperature = initTemperature;
+    this->setTemperature(temperature);
     this->maxTemperature = maxTemperature;
     this->enviromentTemp = enviromentTemp;
     this->overflow = 0;
@@ -61,11 +61,6 @@ bool Tank::getOverflow() const
     return overflow;
 }
 
-unsigned int Tank::getInitLevel() const
-{
-    return initLevel;
-}
-
 unsigned int Tank::getMaxLevel() const
 {
     return maxLevel;
@@ -74,11 +69,6 @@ unsigned int Tank::getMaxLevel() const
 unsigned int Tank::getBaseRadius() const
 {
     return baseRadius;
-}
-
-int Tank::getInitTemperature() const
-{
-    return initTemperature;
 }
 
 int Tank::getMaxTemperature() const
