@@ -3,5 +3,18 @@
 Heater::Heater()
 {
     state = HEATER_OFF;
-    heaterTemp = 0 ;
+    initTemp = 0;
+    temp = 0 ;
+}
+
+Heater::Heater(int initTemp)
+{
+    state = HEATER_OFF;
+    this->initTemp = initTemp;
+    temp = 0 ;
+}
+
+int Heater::getInitHeaterTemp() const
+{
+    return initTemp;
 }

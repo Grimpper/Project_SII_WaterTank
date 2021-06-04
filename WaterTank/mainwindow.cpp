@@ -24,46 +24,39 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete drawTimer;
+
+    deletePointerMembers();
 }
 
 void MainWindow::connectQtElements()
 {
+    //  SIMULATION BUTTONS  //
+    connect(ui->pushButton_Start, SIGNAL(clicked()), this, SLOT(start()));
+    connect(ui->pushButton_Stop, SIGNAL(clicked()), this, SLOT(stop()));
+    connect(ui->pushButton_Reset, SIGNAL(clicked()), this, SLOT(reset()));
+
+    //  VALVE BUTTONS  //
+    connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
+    connect(ui->pushButton_Valve_Open, SIGNAL(clicked()), this, SLOT(setValveState()));
+
+    //  HEATER BUTTONS  //
+    connect(ui->pushButton_Heater_Off, SIGNAL(clicked()), this, SLOT(setHeaterState()));
+    connect(ui->pushButton_Heater_On, SIGNAL(clicked()), this, SLOT(setHeaterState()));
+
     // TIMER //
     drawTimer->setInterval(100);
     drawTimer->setSingleShot(false);
     connect(drawTimer, SIGNAL(timeout()), this, SLOT(setDrawing()));
     drawTimer->start();
-
-    //  TANK  //
-    connect(ui->spinBox_MaxLevel, SIGNAL(valueChanged(int)), this, SLOT(setMaxLevel()));
-    connect(ui->spinBox_InitLevel, SIGNAL(valueChanged(int)), this, SLOT(setInitLevel()));
-    connect(ui->spinBox_MaxTemp, SIGNAL(valueChanged(int)), this, SLOT(setMaxTemperature()));
-    connect(ui->spinBox_InitTemp, SIGNAL(valueChanged(int)), this, SLOT(setInitTemperature()));
-    connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(setBaseRadius()));
-    connect(ui->spinBox_EnviromentalTemp, SIGNAL(valueChanged(int)), this, SLOT(setEnviromentalTemp()));
-
-    //  PUMP  //
-    connect(ui->spinBox_EntranceFlow, SIGNAL(valueChanged(int)),this, SLOT (setMaxFlow()));
-    connect(ui->spinBox_EntranceTemp, SIGNAL(valueChanged(int)),this, SLOT(setInitPumpTemperature()));
-
-    //  VALVE  //
-    connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
-    connect(ui->pushButton_Valve_Open, SIGNAL(clicked()), this, SLOT(setValveState()));
-
-    connect(ui->spinBox_ExitRadius, SIGNAL(valueChanged(int)), this, SLOT(setExitRadius()));
-    connect(ui->spinBox_ExitConnection, SIGNAL(valueChanged(int)), this, SLOT(setExitConnection()));
-
-    //  HEATER  //
-    connect(ui->pushButton_Heater_Off, SIGNAL(clicked()), this, SLOT(setHeaterState()));
-    connect(ui->pushButton_Heater_On, SIGNAL(clicked()), this, SLOT(setHeaterState()));
-    connect(ui->spinBox_HeaterTemp, SIGNAL(valueChanged(int)), this, SLOT(setHeaterTemp()));
 }
 
 void MainWindow::setDrawing()
 {
-    unsigned int level = tank.getLevel();
-    int temperature = tank.getTemperature();
-    unsigned int pump = this->pump.getFlow();
+    if (!tank || !pump || !valve || !heater) return;
+
+    unsigned int level = tank->getLevel();
+    int temperature = tank->getTemperature();
+    unsigned int pump = this->pump->getFlow();
 
     double imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
     double imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
@@ -100,7 +93,7 @@ void MainWindow::setDrawing()
         ui->ImageWhiteMask->setVisible(true);
     }
 
-    if(valve.state == Valve::VALVE_OPEN){
+    if(valve->state == Valve::VALVE_OPEN){
         ui->ImageTankValveOpen->setVisible(true);
         ui->ImageTankValveClose->setVisible(false);
     } else {
@@ -108,13 +101,13 @@ void MainWindow::setDrawing()
         ui->ImageTankValveClose->setVisible(true);
     }
 
-    if(heater.state == Heater::HEATER_ON){
+    if(heater->state == Heater::HEATER_ON){
         ui->ImageFlame->setVisible(true);
     } else {
         ui->ImageFlame->setVisible(false);
     }
 
-    if(tank.getOverheat()){
+    if(tank->getOverheat()){
         ui->ImageOverheat->setVisible(true);
         ui->label_Overheat->setVisible(true);
     } else {
@@ -122,7 +115,7 @@ void MainWindow::setDrawing()
         ui->label_Overheat->setVisible(false);
     }
 
-    if(tank.getOverflow()){
+    if(tank->getOverflow()){
         ui->ImageOverflow->setVisible(true);
         ui->label_Overflow->setVisible(true);
     } else {
@@ -131,125 +124,87 @@ void MainWindow::setDrawing()
     }
 }
 
-void MainWindow::setMaxLevel()
+void MainWindow::deletePointerMembers()
 {
-    tank.maxLevel = ui->spinBox_MaxLevel->value();
+    delete tank;
+    delete pump;
+    delete valve;
+    delete heater;
+
+    tank = nullptr;
+    pump = nullptr;
+    valve = nullptr;
+    heater = nullptr;
+}
+
+void MainWindow::setEnableConfig(bool state)
+{
+    ui->groupBox_Pump_Config->setEnabled(state);
+    ui->groupBox_Valve_Config->setEnabled(state);
+    ui->groupBox_Tank_Config->setEnabled(state);
+    ui->groupBox_Heater_Config->setEnabled(state);
+    ui->groupBox_Enviroment_Config->setEnabled(state);
+
+    ui->groupBox_Pump->setEnabled(!state);
+    ui->groupBox_Valve->setEnabled(!state);
+    ui->groupBox_Heater->setEnabled(!state);
+}
+
+void MainWindow::start()
+{
+    if (tank || pump || valve || heater) return;
+
+    setEnableConfig(false);
+
+    pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
+    valve = new Valve(ui->spinBox_ExitRadius->value(), ui->spinBox_ExitConnection->value());
+    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
+                    ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
+    heater = new Heater(ui->spinBox_InitHeaterTemp->value());
 
 #if WT_DEBUG == 1
-    qDebug() << "maxLevelSet = " + QString::number(tank.maxLevel);
+    qDebug() << "SIMULATION STARTED";
 #endif
 }
 
-void MainWindow::setInitLevel()
+void MainWindow::stop()
 {
-    tank.initLevel = ui->spinBox_InitLevel->value();
+    deletePointerMembers();
+    drawTimer->stop();
+
+    setEnableConfig(true);
 
 #if WT_DEBUG == 1
-    qDebug() << "initLevel = " + QString::number(tank.initLevel);
+    qDebug() << "SIMULATION STOPPED";
 #endif
 }
 
-void MainWindow::setMaxTemperature()
+void MainWindow::reset()
 {
-    tank.maxTemperature = ui->spinBox_MaxTemp->value();
+    deletePointerMembers();
+    start();
 
 #if WT_DEBUG == 1
-    qDebug() << "maxTemperature = " + QString::number(tank.maxTemperature);
-#endif
-}
-
-void MainWindow::setInitTemperature()
-{
-    tank.initTemperature = ui->spinBox_InitTemp->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "initTemperature = " + QString::number(tank.initTemperature);
-#endif
-}
-
-void MainWindow::setBaseRadius()
-{
-    tank.baseRadius = ui->spinBox_BaseRadius->value();
-    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * tank.baseRadius, 'f', 2) + " m^2");
-
-#if WT_DEBUG == 1
-    qDebug() << "baseRadius = " + QString::number(tank.baseRadius);
-#endif
-}
-
-void MainWindow::setEnviromentalTemp()
-{
-    tank.enviromentalTemp = ui->spinBox_EnviromentalTemp->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "enviromentalTemp = " + QString::number(tank.enviromentalTemp);
-#endif
-}
-
-
-void MainWindow::setMaxFlow()
-{
-    pump.maxFlow = ui->spinBox_EntranceFlow->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "maxFlow = " + QString::number(pump.maxFlow);
-#endif
-}
-
-
-void MainWindow::setInitPumpTemperature()
-{
-    pump.initTemperaturePump = ui->spinBox_EntranceTemp->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "initTemperaturePump = " + QString::number(pump.initTemperaturePump);
+    qDebug() << "SIMULATION RESETED";
 #endif
 }
 
 void MainWindow::setValveState()
 {
-    valve.state = sender() == ui->pushButton_Valve_Open ? Valve::VALVE_OPEN : Valve::VALVE_CLOSE;
+    valve->state = sender() == ui->pushButton_Valve_Open ? Valve::VALVE_OPEN : Valve::VALVE_CLOSE;
 
 #if WT_DEBUG == 1
-    QString str = valve.state ? "OPEN" : "CLOSE";
+    QString str = valve->state ? "OPEN" : "CLOSE";
     qDebug() << "valveState = " + str;
-#endif
-}
-
-void MainWindow::setExitRadius()
-{
-    valve.exitRadius = ui->spinBox_ExitRadius->value();
-    ui->label_ExitArea_Value->setText(QString::number(2 * M_PI * valve.exitRadius, 'f', 2) + " m^2");
-
-#if WT_DEBUG == 1
-    qDebug() << "exitRadius = " + QString::number(valve.exitRadius);
-#endif
-}
-
-void MainWindow::setExitConnection()
-{
-    valve.exitConnection = ui->spinBox_ExitConnection->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "exitConnection = " + QString::number(valve.exitConnection);
-#endif
-}
-
-void MainWindow::setHeaterTemp()
-{
-    heater.heaterTemp = ui->spinBox_HeaterTemp->value();
-
-#if WT_DEBUG == 1
-    qDebug() << "heaterTemp = " + QString::number(heater.heaterTemp);
 #endif
 }
 
 void MainWindow::setHeaterState()
 {
-    heater.state = sender() == ui->pushButton_Heater_On ? Heater::HEATER_ON : Heater::HEATER_OFF;
+    heater->state = sender() == ui->pushButton_Heater_On ? Heater::HEATER_ON : Heater::HEATER_OFF;
 
 #if WT_DEBUG == 1
-    QString str = heater.state ? "ON" : "OFF";
+    QString str = heater->state ? "ON" : "OFF";
     qDebug() << "heaterState = " + str;
 #endif
 }

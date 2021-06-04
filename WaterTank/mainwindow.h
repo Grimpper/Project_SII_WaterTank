@@ -22,40 +22,26 @@ private:
     Ui::MainWindow *ui;
     QTimer* drawTimer;
 
-    Tank tank;
+    Tank* tank = nullptr;
 
-    Pump pump;
+    Pump* pump = nullptr;
 
-    Valve  valve;
+    Valve*  valve = nullptr;
 
-    Heater heater;
+    Heater* heater = nullptr;
+
+    void connectQtElements();
+    void deletePointerMembers();
+    void setEnableConfig(bool state);
 
 private slots:
-    // Timer
     void setDrawing();
 
-   // Tank
-    void setMaxLevel();
-    void setInitLevel();
-    void setMaxTemperature();
-    void setInitTemperature();
-    void setBaseRadius();
-    void setEnviromentalTemp();
+    void start();
+    void stop();
+    void reset();
 
-    //Pump
-    void setMaxFlow();
-    void setInitPumpTemperature();
-
-    //Valve
     void setValveState();
-    void setExitRadius();
-    void setExitConnection();
-
-    //Heater
     void setHeaterState();
-    void setHeaterTemp();
-
-private:
-    void connectQtElements();
 
 };

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>821</width>
+    <width>864</width>
     <height>791</height>
    </rect>
   </property>
@@ -90,6 +90,9 @@
       </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_Pump">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -243,6 +246,9 @@
       </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_Valve">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -315,6 +321,9 @@
       </layout>
      </widget>
      <widget class="QGroupBox" name="groupBox_Heater">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -358,7 +367,7 @@
      <attribute name="title">
       <string>Configuración</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox_Pump_Entrance">
+     <widget class="QGroupBox" name="groupBox_Pump_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -469,7 +478,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_Pump_Entrance_2">
+     <widget class="QGroupBox" name="groupBox_Valve_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -616,7 +625,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_Tank">
+     <widget class="QGroupBox" name="groupBox_Tank_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -910,7 +919,7 @@
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_HeaterConfig">
+     <widget class="QGroupBox" name="groupBox_Heater_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -945,7 +954,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_HeaterTemp">
+         <widget class="QSpinBox" name="spinBox_InitHeaterTemp">
           <property name="minimum">
            <number>-273</number>
           </property>
@@ -972,7 +981,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_Enviroment">
+     <widget class="QGroupBox" name="groupBox_Enviroment_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1278,7 +1287,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>821</width>
+     <width>864</width>
      <height>20</height>
     </rect>
    </property>

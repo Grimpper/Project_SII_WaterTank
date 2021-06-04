@@ -4,6 +4,7 @@ class Heater
 {
 public:
    Heater();
+   Heater(int initHeaterTemp);
 
     enum EnumHeater
     {
@@ -11,5 +12,10 @@ public:
       HEATER_ON
     } state;
 
-    int heaterTemp;
+    int temp;
+
+    int getInitHeaterTemp() const;
+
+private:
+    int initTemp;
 };

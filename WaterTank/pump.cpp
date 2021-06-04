@@ -8,6 +8,14 @@ Pump::Pump()
     pumpTemperature = 0;
 }
 
+Pump::Pump(unsigned int maxFlow, int initTemperaturePump)
+{
+    this->maxFlow = maxFlow;
+    this->initTemperaturePump = initTemperaturePump;
+    flow = 0;
+    pumpTemperature = 0;
+}
+
 unsigned int Pump::getFlow() const
 {
     return flow;
@@ -26,4 +34,14 @@ int Pump::getPumpTemperature() const
 void Pump::setPumpTemperature(int value)
 {
     pumpTemperature = value;
+}
+
+unsigned int Pump::getMaxFlow() const
+{
+    return maxFlow;
+}
+
+int Pump::getInitTemperaturePump() const
+{
+    return initTemperaturePump;
 }
