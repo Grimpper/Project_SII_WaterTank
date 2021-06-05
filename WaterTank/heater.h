@@ -13,4 +13,5 @@ public:
     } state;
 
     int temp;
+int getTempHeater() const;
 };

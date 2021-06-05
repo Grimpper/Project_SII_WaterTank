@@ -4,6 +4,8 @@
 #include "math.h"
 #include <QPixmap>
 
+#define K 100 //CTE for simulation (have to change)
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow), drawTimer(new QTimer)
@@ -152,7 +154,7 @@ void MainWindow::setEnableConfig(bool state)
     ui->groupBox_Heater->setEnabled(!state);
 }
 
-void MainWindow::start()
+void MainWindow::start()   //if we comeback from pause simulation doesnot work
 {
     drawTimer->start();
 
@@ -165,6 +167,10 @@ void MainWindow::start()
     tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
                     ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
     heater = new Heater(ui->spinBox_InitHeaterTemp->value());
+
+    simulationTimer->setInterval(100);
+    simulationTimer->setSingleShot(false);
+    connect(simulationTimer,SIGNAL(timeout()),this,SLOT(updateSimulation()));
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STARTED";
@@ -219,4 +225,23 @@ void MainWindow::updateExitAreaLabel(int value)
 void MainWindow::updateBaseAreaLabel(int value)
 {
     ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * value, 'f', 2) + " m^2");
+}
+
+void MainWindow::updateSimulation()
+{
+  /*  Pump p;
+    Valve v;
+    Tank t;
+    Heater h;
+
+    p.setFlow(ui->horizontalSlider->sliderPosition());
+    Vin = ((drawTimer->interval())/1000) * p.getFlow();
+    Qval = v.getExitRadius() * sqrt(2*9.81*t.getLevel());
+    Vout = ((drawTimer->interval())/1000) * Qval;
+    t.setLevel(t.getLevel()+Vin-Vout);
+
+    if(heater->state == Heater::HEATER_ON)
+        t.setTemperature(-K*(t.getTemperature() - t.getEnviromentTemp()));
+    else
+        t.setTemperature(-K*(t.getTemperature() - h. getTempHeater())); */
 }

@@ -21,6 +21,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QTimer* drawTimer;
+    QTimer* simulationTimer;
 
     Tank* tank = nullptr;
 
@@ -29,6 +30,10 @@ private:
     Valve*  valve = nullptr;
 
     Heater* heater = nullptr;
+
+    float Vin;
+    float Vout;
+    float Qval;
 
     void connectQtElements();
     void deletePointerMembers();
@@ -46,5 +51,7 @@ private slots:
 
     void updateExitAreaLabel(int);
     void updateBaseAreaLabel(int);
+
+    void updateSimulation();
 
 };

@@ -18,3 +18,8 @@ Heater::Heater(int initTemp)
     qDebug().noquote() << str;
 #endif
 }
+
+ int Heater::getTempHeater() const
+{
+    return temp;
+}
