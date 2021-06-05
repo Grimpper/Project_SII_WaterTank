@@ -10,9 +10,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * ui->spinBox_BaseRadius->value(), 'f', 2) + " m^2");
     ui->groupBox_GUI->setStyleSheet("background-color: white");
 
+    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * ui->spinBox_BaseRadius->value(), 'f', 2) + " m^2");
     ui->label_ExitArea_Value->setText(QString::number(2 * M_PI * ui->spinBox_ExitRadius->value(), 'f', 2) + " m^2");
 
 
@@ -41,6 +41,10 @@ void MainWindow::connectQtElements()
     //  HEATER BUTTONS  //
     connect(ui->pushButton_Heater_Off, SIGNAL(clicked()), this, SLOT(setHeaterState()));
     connect(ui->pushButton_Heater_On, SIGNAL(clicked()), this, SLOT(setHeaterState()));
+
+    //  CONFIGURATION BUTTONS  //
+    connect(ui->spinBox_ExitRadius, SIGNAL(valueChanged(int)), this, SLOT(updateExitAreaLabel(int)));
+    connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(updateBaseAreaLabel(int)));
 
     // TIMER //
     drawTimer->setInterval(100);
@@ -204,4 +208,15 @@ void MainWindow::setHeaterState()
     QString str = heater->state ? "ON" : "OFF";
     qDebug() << "heaterState = " + str;
 #endif
+}
+
+void MainWindow::updateExitAreaLabel(int value)
+{
+    ui->label_ExitArea_Value->setText(QString::number(2 * M_PI * value, 'f', 2) + " m^2");
+}
+
+
+void MainWindow::updateBaseAreaLabel(int value)
+{
+    ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * value, 'f', 2) + " m^2");
 }

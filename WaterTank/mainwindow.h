@@ -44,4 +44,7 @@ private slots:
     void setValveState();
     void setHeaterState();
 
+    void updateExitAreaLabel(int);
+    void updateBaseAreaLabel(int);
+
 };
