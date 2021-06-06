@@ -57,13 +57,13 @@ void MainWindow::updateDrawing()
 {
     if (!checkPointerInit()) return;
 
-    unsigned int level = tank->getLevel();
-    int temperature = tank->getTemperature();
-    unsigned int pump = this->pump->getFlow();
+    float level = tank->getLevel();
+    float temperature = tank->getTemperature();
+    float pump = this->pump->getFlow();
 
-    double imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
-    double imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
-    double imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
+    float imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
+    float imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
+    float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
 
     if(imageWhiteMaskHeight < 10){
             imageWhiteMaskHeight = 10;
@@ -129,7 +129,7 @@ void MainWindow::updateDrawing()
 
 void MainWindow::sim()
 {
-    //simulation->computeStep();
+    simulation->computeStep();
     updateDrawing();
 }
 
@@ -188,7 +188,7 @@ void MainWindow::start()
 
 
     pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
-    valve = new Valve(ui->spinBox_ExitRadius->value(), ui->spinBox_ExitConnection->value());
+    valve = new Valve(ui->spinBox_ExitRadius->value() * 0.01, ui->spinBox_ExitConnection->value());
     tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
                     ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
     heater = new Heater(ui->spinBox_InitHeaterTemp->value());

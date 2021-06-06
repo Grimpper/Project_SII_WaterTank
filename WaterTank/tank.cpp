@@ -18,17 +18,14 @@ Tank::Tank()
 
 Tank::Tank(float maxLevel, float level, float maxTemperature,
            float temperature, float baseRadius, float enviromentTemp)
+    : maxLevel(maxLevel), baseRadius(baseRadius), maxTemperature(maxTemperature), enviromentTemp(enviromentTemp)
 {
-    setLevel(level);
     liquidHeight = 0;
     liquidSurface = 0;
-    this->maxLevel = maxLevel;
-    this->baseRadius = baseRadius;
-    setTemperature(temperature);
-    this->maxTemperature = maxTemperature;
-    this->enviromentTemp = enviromentTemp;
     overflow = 0;
     overheat = 0;
+    setLevel(level);
+    setTemperature(temperature);
 
 #if WT_DEBUG == 1
     QString str = "Tank initialized with:\n";
@@ -50,12 +47,19 @@ float Tank::getLevel() const
 
 void Tank::setLevel(float value)
 {
-    level = value;
+    if (value > maxLevel)
+        level = maxLevel;
+    else if (value < 0)
+        level = 0;
+    else
+        level = value;
 
     liquidHeight = level / (M_PI * pow(getBaseRadius(), 2));
-    liquidSurface = 2 * M_PI * liquidHeight;
+    liquidSurface = 2 * M_PI * getBaseRadius() * liquidHeight;
 
-    if (level > maxLevel)
+    if (level < maxLevel)
+        overflow = false;
+    else
         overflow = true;
 
 #if WT_DEBUG == 1
