@@ -50,6 +50,7 @@ private slots:
     void reset();
 
     void flowChanged(int);
+    void tempChanged(int);
 
     void setValveState();
     void setHeaterState();

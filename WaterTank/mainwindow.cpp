@@ -36,6 +36,7 @@ void MainWindow::connectQtElements()
     connect(ui->pushButton_Reset, SIGNAL(clicked()), this, SLOT(reset()));
 
     connect(ui->horizontalSlider_Flow, SIGNAL(valueChanged(int)), this, SLOT(flowChanged(int)));
+    connect(ui->spinBox_Temperature, SIGNAL(valueChanged(int)), this, SLOT(tempChanged(int)));
 
     //  VALVE BUTTONS  //
     connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
@@ -225,7 +226,7 @@ void MainWindow::reset()
 
 void MainWindow::flowChanged(int flow)
 {
-    pump->setFlow(UnitUtils::getInLiters(flow / 10.0));
+    pump->setFlow(UnitUtils::getInCubicMeters(flow / 10.0));
 
     QString str = "Caudal: " + QString::number(UnitUtils::getInLiters(pump->getFlow())) + " L/s";
     ui->label_PumpFlow->setText(str);
@@ -235,6 +236,15 @@ void MainWindow::flowChanged(int flow)
 
 #if WT_DEBUG == 1
     qDebug() << "setFlow = " + QString::number(UnitUtils::getInLiters(pump->getFlow()));
+#endif
+}
+
+void MainWindow::tempChanged(int temp)
+{
+    heater->temp = temp;
+
+#if WT_DEBUG == 1
+    qDebug() << "Temp: " + QString::number(heater->temp) + " ºC";;
 #endif
 }
 
