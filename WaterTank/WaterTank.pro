@@ -15,6 +15,7 @@ SOURCES += \
     pump.cpp \
     simulation.cpp \
     tank.cpp \
+    unitutils.cpp \
     valve.cpp
 
 HEADERS += \
@@ -23,6 +24,7 @@ HEADERS += \
     pump.h \
     simulation.h \
     tank.h \
+    unitutils.h \
     valve.h
 
 FORMS += \

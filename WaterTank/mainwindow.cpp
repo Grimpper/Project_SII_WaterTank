@@ -1,8 +1,9 @@
+#include <QDebug>
+#include <QPixmap>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
 #include "math.h"
-#include <QPixmap>
+#include "unitutils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -57,7 +58,7 @@ void MainWindow::updateDrawing()
 {
     if (!checkPointerInit()) return;
 
-    float level = tank->getLevel();
+    float level = UnitUtils::getInLiters(tank->getLevel());
     float temperature = tank->getTemperature();
     float pump = this->pump->getFlow();
 
@@ -187,15 +188,14 @@ void MainWindow::start()
 
     if (checkPointerInit()) return;
 
-
-    pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
-    valve = new Valve(ui->spinBox_ExitRadius->value() * 0.01, ui->spinBox_ExitConnection->value());
-    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
+    pump = new Pump(UnitUtils::getInCubicMeters(ui->spinBox_EntranceFlow->value()), ui->spinBox_EntranceTemp->value());
+    valve = new Valve(UnitUtils::getInMeters(ui->spinBox_ExitRadius->value()), ui->spinBox_ExitConnection->value());
+    tank = new Tank(UnitUtils::getInCubicMeters(ui->spinBox_MaxLevel->value()), UnitUtils::getInCubicMeters(ui->spinBox_InitLevel->value()), ui->spinBox_MaxTemp->value(),
                     ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
     heater = new Heater(ui->spinBox_InitHeaterTemp->value());
     simulation = new Simulation(tank, pump, valve, heater, getTimestep());
 
-    ui->horizontalSlider_Flow->setMaximum(pump->getMaxFlow() * 10);
+    ui->horizontalSlider_Flow->setMaximum(UnitUtils::getInLiters(pump->getMaxFlow() * 10));
     setEnableConfig(false);
 
 #if WT_DEBUG == 1
@@ -225,16 +225,16 @@ void MainWindow::reset()
 
 void MainWindow::flowChanged(int flow)
 {
-    pump->setFlow(flow / 10.0);
+    pump->setFlow(UnitUtils::getInLiters(flow / 10.0));
 
-    QString str = "Caudal: " + QString::number(pump->getFlow()) + " L/s";
+    QString str = "Caudal: " + QString::number(UnitUtils::getInLiters(pump->getFlow())) + " L/s";
     ui->label_PumpFlow->setText(str);
 
     str = "Porcentaje: " + QString::number(flow / (float)ui->horizontalSlider_Flow->maximum() * 100) + " %";
     ui->label_PumpPercentage->setText(str);
 
 #if WT_DEBUG == 1
-    qDebug() << "setFlow = " + QString::number(pump->getFlow());
+    qDebug() << "setFlow = " + QString::number(UnitUtils::getInLiters(pump->getFlow()));
 #endif
 }
 
