@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>864</width>
-    <height>791</height>
+    <height>863</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>20</x>
       <y>20</y>
       <width>381</width>
-      <height>721</height>
+      <height>791</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -63,24 +63,27 @@
           <property name="text">
            <string>1x</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_x1_2">
+         <widget class="QRadioButton" name="radioButton_x2">
           <property name="text">
            <string>2x</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_x1_4">
+         <widget class="QRadioButton" name="radioButton_x5">
           <property name="text">
            <string>5x</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_x1_3">
+         <widget class="QRadioButton" name="radioButton_x10">
           <property name="text">
            <string>10x</string>
           </property>
@@ -89,7 +92,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_Pump">
+     <widget class="QGroupBox" name="groupBox_Controls">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -102,13 +105,13 @@
        </rect>
       </property>
       <property name="title">
-       <string>Bomba</string>
+       <string>Controles</string>
       </property>
-      <widget class="QSlider" name="horizontalSlider">
+      <widget class="QSlider" name="horizontalSlider_Flow">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>20</y>
+         <y>80</y>
          <width>331</width>
          <height>22</height>
         </rect>
@@ -127,8 +130,8 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>60</y>
-         <width>81</width>
+         <y>30</y>
+         <width>171</width>
          <height>16</height>
         </rect>
        </property>
@@ -141,30 +144,12 @@
         <string>Porcentaje:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_PumpPercentage_Value">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_PumpFlow">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>80</y>
-         <width>61</width>
+         <y>50</y>
+         <width>171</width>
          <height>16</height>
         </rect>
        </property>
@@ -175,24 +160,6 @@
        </property>
        <property name="text">
         <string>Caudal:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_PumpFlow_Value">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>80</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
       <widget class="QWidget" name="layoutWidget_14">
@@ -410,7 +377,7 @@
            <number>1000</number>
           </property>
           <property name="value">
-           <number>10</number>
+           <number>100</number>
           </property>
          </widget>
         </item>
@@ -518,10 +485,10 @@
            <number>0</number>
           </property>
           <property name="maximum">
-           <number>1000</number>
+           <number>2000</number>
           </property>
           <property name="value">
-           <number>25</number>
+           <number>10</number>
           </property>
          </widget>
         </item>
@@ -544,7 +511,7 @@
         <rect>
          <x>10</x>
          <y>60</y>
-         <width>232</width>
+         <width>301</width>
          <height>26</height>
         </rect>
        </property>
@@ -631,7 +598,7 @@
         <x>10</x>
         <y>300</y>
         <width>351</width>
-        <height>211</height>
+        <height>291</height>
        </rect>
       </property>
       <property name="title">
@@ -665,7 +632,7 @@
            <number>0</number>
           </property>
           <property name="maximum">
-           <number>5000</number>
+           <number>10000</number>
           </property>
           <property name="value">
            <number>5000</number>
@@ -690,7 +657,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>60</y>
+         <y>90</y>
          <width>184</width>
          <height>26</height>
         </rect>
@@ -714,7 +681,7 @@
            <number>0</number>
           </property>
           <property name="maximum">
-           <number>5000</number>
+           <number>8000</number>
           </property>
           <property name="value">
            <number>0</number>
@@ -739,7 +706,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>100</y>
+         <y>140</y>
          <width>292</width>
          <height>26</height>
         </rect>
@@ -766,7 +733,7 @@
            <number>1000</number>
           </property>
           <property name="value">
-           <number>25</number>
+           <number>500</number>
           </property>
          </widget>
         </item>
@@ -788,7 +755,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>200</y>
          <width>272</width>
          <height>26</height>
         </rect>
@@ -837,7 +804,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>170</y>
+         <y>250</y>
          <width>235</width>
          <height>26</height>
         </rect>
@@ -886,7 +853,7 @@
        <property name="geometry">
         <rect>
          <x>220</x>
-         <y>160</y>
+         <y>240</y>
          <width>121</width>
          <height>23</height>
         </rect>
@@ -904,7 +871,7 @@
        <property name="geometry">
         <rect>
          <x>220</x>
-         <y>180</y>
+         <y>260</y>
          <width>121</width>
          <height>23</height>
         </rect>
@@ -918,12 +885,110 @@
         <string/>
        </property>
       </widget>
+      <widget class="QWidget" name="layoutWidget_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>246</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_18">
+        <item>
+         <widget class="QLabel" name="label_Overflow_Threshold">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Alerta desbordamiento:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_Overflow_Threshold">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>10000</number>
+          </property>
+          <property name="value">
+           <number>4500</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_Overflow_Threshold_Units">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>L</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>170</y>
+         <width>292</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <item>
+         <widget class="QLabel" name="label_Overheat_Threshold">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Alerta sobrecalentamiento:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_Overheat_Threshold">
+          <property name="minimum">
+           <number>-273</number>
+          </property>
+          <property name="maximum">
+           <number>1000</number>
+          </property>
+          <property name="value">
+           <number>450</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_Overheat_Threshold_Units">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>ºC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_Heater_Config">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>530</y>
+        <y>600</y>
         <width>351</width>
         <height>71</height>
        </rect>
@@ -985,7 +1050,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>610</y>
+        <y>680</y>
         <width>351</width>
         <height>71</height>
        </rect>
@@ -1280,6 +1345,69 @@
     <zorder>ImageOverheat</zorder>
     <zorder>ImageThermometerMask</zorder>
     <zorder>ImageWhiteMask</zorder>
+   </widget>
+   <widget class="QLabel" name="label_SimTime">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>50</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tiempo simulado:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Temp">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>80</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Temperatura:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Level">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>110</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Nivel:</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

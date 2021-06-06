@@ -1,9 +1,13 @@
-#include "tank.h"
 #include <QDebug>
+#include <math.h>
+#include "tank.h"
 
 Tank::Tank()
+    : overflowThreshold(0), overheatThreshold(0)
 {
     level = 0;
+    liquidHeight = 0;
+    liquidSurface = 0;
     maxLevel = 0;
     baseRadius = 0;
     temperature = 0;
@@ -13,17 +17,19 @@ Tank::Tank()
     overheat = 0;
 }
 
-Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
-           int temperature, unsigned int baseRadius, int enviromentTemp)
+Tank::Tank(float maxLevel, float level, float maxTemperature,
+           float temperature, float baseRadius, float enviromentTemp,
+           const float overflowThreshold, const float overheatThreshold)
+    : maxLevel(maxLevel), baseRadius(baseRadius), maxTemperature(maxTemperature),
+      enviromentTemp(enviromentTemp), overflowThreshold(overflowThreshold),
+      overheatThreshold(overheatThreshold)
 {
-    this->setLevel(level);
-    this->maxLevel = maxLevel;
-    this->baseRadius = baseRadius;
-    this->setTemperature(temperature);
-    this->maxTemperature = maxTemperature;
-    this->enviromentTemp = enviromentTemp;
-    this->overflow = 0;
-    this->overheat = 0;
+    liquidHeight = 0;
+    liquidSurface = 0;
+    overflow = 0;
+    overheat = 0;
+    setLevel(level);
+    setTemperature(temperature);
 
 #if WT_DEBUG == 1
     QString str = "Tank initialized with:\n";
@@ -38,30 +44,53 @@ Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
 #endif
 }
 
-unsigned int Tank::getLevel() const
+float Tank::getLevel() const
 {
     return level;
 }
 
-void Tank::setLevel(unsigned int value)
+void Tank::setLevel(float value)
 {
-    level = value;
+    if (value > maxLevel)
+        level = maxLevel;
+    else if (value < 0)
+        level = 0;
+    else
+        level = value;
 
-    if (level > maxLevel)
+    liquidHeight = level / (M_PI * pow(getBaseRadius(), 2));
+    liquidSurface = 2 * M_PI * getBaseRadius() * liquidHeight + 2 * M_PI * pow(getBaseRadius(), 2);
+
+    if (level < overflowThreshold)
+        overflow = false;
+    else
         overflow = true;
+
+#if WT_DEBUG == 1
+    QString str = "Tank level:\n" + QString::number(level) + "\n";
+    qDebug().noquote() << str;
+#endif
 }
 
-int Tank::getTemperature() const
+float Tank::getTemperature() const
 {
     return temperature;
 }
 
-void Tank::setTemperature(int value)
+void Tank::setTemperature(float value)
 {
     temperature = value;
 
-    if (temperature > maxTemperature)
+    if (temperature < overheatThreshold)
+        overheat = false;
+    else
         overheat = true;
+
+
+#if WT_DEBUG == 1
+    QString str = "Tank temperature:\n" + QString::number(temperature) + "\n";
+    qDebug().noquote() << str;
+#endif
 }
 
 bool Tank::getOverheat() const
@@ -74,22 +103,32 @@ bool Tank::getOverflow() const
     return overflow;
 }
 
-unsigned int Tank::getMaxLevel() const
+float Tank::getMaxLevel() const
 {
     return maxLevel;
 }
 
-unsigned int Tank::getBaseRadius() const
+float Tank::getBaseRadius() const
 {
     return baseRadius;
 }
 
-int Tank::getMaxTemperature() const
+float Tank::getMaxTemperature() const
 {
     return maxTemperature;
 }
 
-int Tank::getEnviromentTemp() const
+float Tank::getEnviromentTemp() const
 {
     return enviromentTemp;
+}
+
+float Tank::getLiquidHeight() const
+{
+    return liquidHeight;
+}
+
+float Tank::getLiquidSurface() const
+{
+    return liquidSurface;
 }

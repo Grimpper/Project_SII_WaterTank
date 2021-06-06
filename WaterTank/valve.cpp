@@ -8,7 +8,7 @@ Valve::Valve()
     exitConnection = 0;
 }
 
-Valve::Valve(unsigned int exitRadius, unsigned int exitConnection)
+Valve::Valve(float exitRadius, float exitConnection)
 {
     state = VALVE_CLOSE;
     this->exitRadius = exitRadius;
@@ -23,12 +23,12 @@ Valve::Valve(unsigned int exitRadius, unsigned int exitConnection)
 #endif
 }
 
-unsigned int Valve::getExitRadius() const
+float Valve::getExitRadius() const
 {
     return exitRadius;
 }
 
-unsigned int Valve::getExitConnection() const
+float Valve::getExitConnection() const
 {
     return exitConnection;
 }

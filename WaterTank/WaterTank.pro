@@ -13,14 +13,18 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pump.cpp \
+    simulation.cpp \
     tank.cpp \
+    unitutils.cpp \
     valve.cpp
 
 HEADERS += \
     heater.h \
     mainwindow.h \
     pump.h \
+    simulation.h \
     tank.h \
+    unitutils.h \
     valve.h
 
 FORMS += \

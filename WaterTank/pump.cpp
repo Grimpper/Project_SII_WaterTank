@@ -8,7 +8,7 @@ Pump::Pump()
     flow = 0;
 }
 
-Pump::Pump(unsigned int maxFlow, int pumpTemperature)
+Pump::Pump(float maxFlow, float pumpTemperature)
 {
     this->maxFlow = maxFlow;
     this->pumpTemperature = pumpTemperature;
@@ -23,27 +23,30 @@ Pump::Pump(unsigned int maxFlow, int pumpTemperature)
 #endif
 }
 
-unsigned int Pump::getFlow() const
+float Pump::getFlow() const
 {
     return flow;
 }
 
-void Pump::setFlow(unsigned int value)
+void Pump::setFlow(float value)
 {
-    flow = value;
+    if (value > maxFlow)
+        flow = maxFlow;
+    else
+        flow = value;
 }
 
-int Pump::getPumpTemperature() const
+float Pump::getPumpTemperature() const
 {
     return pumpTemperature;
 }
 
-void Pump::setPumpTemperature(int value)
+void Pump::setPumpTemperature(float value)
 {
     pumpTemperature = value;
 }
 
-unsigned int Pump::getMaxFlow() const
+float Pump::getMaxFlow() const
 {
     return maxFlow;
 }

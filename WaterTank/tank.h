@@ -4,31 +4,35 @@ class Tank
 {
 public:
     Tank();
-    Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
-         int temperature, unsigned int baseRadius, int enviromentTemp);
+    Tank(float maxLevel, float level, float maxTemperature,
+         float temperature, float baseRadius, float enviromentTemp, const float overflowThreshold, const float overheatThreshold);
 
-    unsigned int getLevel() const;
-    void setLevel(unsigned int value);
+    float getLevel() const;
+    void setLevel(float value);
 
-    int getTemperature() const;
-    void setTemperature(int value);
+    float getTemperature() const;
+    void setTemperature(float value);
 
     bool getOverheat() const;
     bool getOverflow() const;
 
-    unsigned int getMaxLevel() const;
+    float getMaxLevel() const;
 
-    unsigned int getBaseRadius() const;
+    float getBaseRadius() const;
 
-    int getMaxTemperature() const;
+    float getMaxTemperature() const;
 
-    int getEnviromentTemp() const;
+    float getEnviromentTemp() const;
+
+    float getLiquidHeight() const;
+    float getLiquidSurface() const;
 
 private:
-    unsigned int maxLevel, level;
-    unsigned int baseRadius;
+    float maxLevel, level, liquidHeight, liquidSurface, baseRadius;
 
-    int maxTemperature, enviromentTemp, temperature;
+    float maxTemperature, enviromentTemp, temperature;
+
+    const float overflowThreshold, overheatThreshold;
 
     bool overheat, overflow;
 };

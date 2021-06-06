@@ -2,10 +2,13 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QElapsedTimer>
+#include <QSignalMapper>
 #include "tank.h"
 #include "pump.h"
 #include "valve.h"
 #include "heater.h"
+#include "simulation.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +23,21 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QTimer* drawTimer;
+    QSignalMapper* signalMapper;
+
+    QTimer simulationTimer;
+    const unsigned int simulationIntervalMS = 100;
+
+    QElapsedTimer elapsedTimer;
+    int displayTimeUntilLastStop = 0;
+
+    enum EnumSimStep
+    {
+        x1 = 1,
+        x2 = 2,
+        x5 = 5,
+        x10 = 10
+    } simStep = EnumSimStep::x1;
 
     Tank* tank = nullptr;
 
@@ -30,21 +47,33 @@ private:
 
     Heater* heater = nullptr;
 
+    Simulation* simulation = nullptr;
+
     void connectQtElements();
+    bool checkPointerInit();
     void deletePointerMembers();
     void setEnableConfig(bool state);
+    float getTimestep();
+
+    void updateDrawing();
 
 private slots:
-    void setDrawing();
+    void sim();
 
     void start();
     void pause();
     void reset();
+
+    void setTimestep(int);
+    void flowChanged(int);
+    void tempChanged(int);
 
     void setValveState();
     void setHeaterState();
 
     void updateExitAreaLabel(int);
     void updateBaseAreaLabel(int);
+
+    void safetyHandler();
 
 };

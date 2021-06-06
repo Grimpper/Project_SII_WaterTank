@@ -1,12 +1,13 @@
+#include <QDebug>
+#include <QPixmap>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
 #include "math.h"
-#include <QPixmap>
+#include "unitutils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), drawTimer(new QTimer)
+    , ui(new Ui::MainWindow), signalMapper(new QSignalMapper)
 {
     ui->setupUi(this);
 
@@ -22,17 +23,33 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete drawTimer;
+    delete signalMapper;
 
     deletePointerMembers();
 }
 
 void MainWindow::connectQtElements()
 {
-    //  SIMULATION BUTTONS  //
+    //  SIMULATION CONTROLS  //
     connect(ui->pushButton_Start, SIGNAL(clicked()), this, SLOT(start()));
     connect(ui->pushButton_Pause, SIGNAL(clicked()), this, SLOT(pause()));
     connect(ui->pushButton_Reset, SIGNAL(clicked()), this, SLOT(reset()));
+
+    connect(ui->horizontalSlider_Flow, SIGNAL(valueChanged(int)), this, SLOT(flowChanged(int)));
+    connect(ui->spinBox_Temperature, SIGNAL(valueChanged(int)), this, SLOT(tempChanged(int)));
+
+    // RADIO BUTTONS //
+    signalMapper->setMapping(ui->radioButton_x1, EnumSimStep::x1);
+    signalMapper->setMapping(ui->radioButton_x2, EnumSimStep::x2);
+    signalMapper->setMapping(ui->radioButton_x5, EnumSimStep::x5);
+    signalMapper->setMapping(ui->radioButton_x10, EnumSimStep::x10);
+
+    connect(ui->radioButton_x1, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(ui->radioButton_x2, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(ui->radioButton_x5, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(ui->radioButton_x10, SIGNAL(clicked()), signalMapper, SLOT(map()));
+
+    connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(setTimestep(int)));
 
     //  VALVE BUTTONS  //
     connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
@@ -47,22 +64,31 @@ void MainWindow::connectQtElements()
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(updateBaseAreaLabel(int)));
 
     // TIMER //
-    drawTimer->setInterval(100);
-    drawTimer->setSingleShot(false);
-    connect(drawTimer, SIGNAL(timeout()), this, SLOT(setDrawing()));
+    simulationTimer.setInterval(simulationIntervalMS);
+    connect(&simulationTimer, SIGNAL(timeout()), this, SLOT(sim()));
 }
 
-void MainWindow::setDrawing()
+void MainWindow::updateDrawing()
 {
-    if (!tank || !pump || !valve || !heater) return;
+    if (!checkPointerInit()) return;
 
-    unsigned int level = tank->getLevel();
-    int temperature = tank->getTemperature();
-    unsigned int pump = this->pump->getFlow();
+    float level = tank->getLevel();
+    float temperature = tank->getTemperature();
+    float pump = this->pump->getFlow();   
 
-    double imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
-    double imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
-    double imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
+    QString str = "Tiempo simulado: " + QString::number((elapsedTimer.elapsed() * simStep + displayTimeUntilLastStop) / 1000.0) + " s";
+    ui->label_SimTime->setText(str);
+
+    str = "Temperatura: " + QString::number(UnitUtils::getInCelsius(temperature), 'f', 2) + " ºC";
+    ui->label_Temp->setText(str);
+
+    str = "Nivel: " + QString::number(UnitUtils::getInLiters(level), 'f', 2) + " L";
+    ui->label_Level->setText(str);
+
+    //FIXME: make image stretch max level dependent
+    float imageWhiteMaskHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
+    float imageWaterFlowHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
+    float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (tank->getMaxTemperature() + 20.0) + 137.0;
 
     if(imageWhiteMaskHeight < 10){
             imageWhiteMaskHeight = 10;
@@ -126,17 +152,31 @@ void MainWindow::setDrawing()
     }
 }
 
+void MainWindow::sim()
+{
+    simulation->computeStep();
+    safetyHandler();
+    updateDrawing();
+}
+
+bool MainWindow::checkPointerInit()
+{
+    return tank || pump || valve || heater || simulation;
+}
+
 void MainWindow::deletePointerMembers()
 {
     delete tank;
     delete pump;
     delete valve;
     delete heater;
+    delete simulation;
 
     tank = nullptr;
     pump = nullptr;
     valve = nullptr;
     heater = nullptr;
+    simulation = nullptr;
 }
 
 void MainWindow::setEnableConfig(bool state)
@@ -147,24 +187,54 @@ void MainWindow::setEnableConfig(bool state)
     ui->groupBox_Heater_Config->setEnabled(state);
     ui->groupBox_Enviroment_Config->setEnabled(state);
 
-    ui->groupBox_Pump->setEnabled(!state);
+    ui->groupBox_Controls->setEnabled(!state);
     ui->groupBox_Valve->setEnabled(!state);
     ui->groupBox_Heater->setEnabled(!state);
 }
 
+float MainWindow::getTimestep()
+{
+    float step = simulationIntervalMS / 1000.0;
+
+    if (ui->radioButton_x2->isChecked())
+        step *= 2;
+    else if (ui->radioButton_x5->isChecked())
+        step *= 5;
+    else if (ui->radioButton_x10->isChecked())
+        step *= 10;
+
+    return step;
+}
+
 void MainWindow::start()
 {
-    drawTimer->start();
+    simulationTimer.start();
+    elapsedTimer.start();
 
-    if (tank || pump || valve || heater) return;
+    if (checkPointerInit()) return;
+
+    pump = new Pump(UnitUtils::getInCubicMeters(ui->spinBox_EntranceFlow->value()),
+                    UnitUtils::getInKelvin(ui->spinBox_EntranceTemp->value()));
+
+    valve = new Valve(UnitUtils::getInMeters(ui->spinBox_ExitRadius->value()),
+                      ui->spinBox_ExitConnection->value());
+
+    tank = new Tank(UnitUtils::getInCubicMeters(ui->spinBox_MaxLevel->value()),
+                    UnitUtils::getInCubicMeters(ui->spinBox_InitLevel->value()),
+                    UnitUtils::getInKelvin(ui->spinBox_MaxTemp->value()),
+                    UnitUtils::getInKelvin(ui->spinBox_InitTemp->value()),
+                    ui->spinBox_BaseRadius->value(),
+                    UnitUtils::getInKelvin(ui->spinBox_EnviromentalTemp->value()),
+                    UnitUtils::getInCubicMeters(ui->spinBox_Overflow_Threshold->value()),
+                    UnitUtils::getInKelvin(ui->spinBox_Overheat_Threshold->value()));
+
+    heater = new Heater(UnitUtils::getInKelvin(ui->spinBox_InitHeaterTemp->value()));
+
+    simulation = new Simulation(tank, pump, valve, heater, getTimestep());
+
+    ui->horizontalSlider_Flow->setMaximum(UnitUtils::getInLiters(pump->getMaxFlow() * 10));
 
     setEnableConfig(false);
-
-    pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
-    valve = new Valve(ui->spinBox_ExitRadius->value(), ui->spinBox_ExitConnection->value());
-    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
-                    ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
-    heater = new Heater(ui->spinBox_InitHeaterTemp->value());
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STARTED";
@@ -173,7 +243,8 @@ void MainWindow::start()
 
 void MainWindow::pause()
 {
-    drawTimer->stop();
+    simulationTimer.stop();
+    displayTimeUntilLastStop += elapsedTimer.elapsed() * simStep;
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STOPPED";
@@ -182,11 +253,51 @@ void MainWindow::pause()
 
 void MainWindow::reset()
 {
+    simulationTimer.stop();
     deletePointerMembers();
     setEnableConfig(true);
 
+    displayTimeUntilLastStop = 0;
+
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION RESETED";
+#endif
+}
+
+void MainWindow::setTimestep(int step)
+{
+    displayTimeUntilLastStop += elapsedTimer.elapsed() * simStep;
+    elapsedTimer.start();
+
+    simStep = (EnumSimStep) step;
+    simulation->setStep(step);
+
+#if WT_DEBUG == 1
+    qDebug() << "Checked = " + QString::number(step);
+#endif
+}
+
+void MainWindow::flowChanged(int flow)
+{
+    pump->setFlow(UnitUtils::getInCubicMeters(flow / 10.0));
+
+    QString str = "Caudal: " + QString::number(UnitUtils::getInLiters(pump->getFlow())) + " L/s";
+    ui->label_PumpFlow->setText(str);
+
+    str = "Porcentaje: " + QString::number(flow / (float)ui->horizontalSlider_Flow->maximum() * 100) + " %";
+    ui->label_PumpPercentage->setText(str);
+
+#if WT_DEBUG == 1
+    qDebug() << "setFlow = " + QString::number(UnitUtils::getInLiters(pump->getFlow()));
+#endif
+}
+
+void MainWindow::tempChanged(int temp)
+{
+    heater->temp = UnitUtils::getInKelvin(temp);
+
+#if WT_DEBUG == 1
+    qDebug() << "Temp: " + QString::number(temp) + " ºC";;
 #endif
 }
 
@@ -219,4 +330,13 @@ void MainWindow::updateExitAreaLabel(int value)
 void MainWindow::updateBaseAreaLabel(int value)
 {
     ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * value, 'f', 2) + " m^2");
+}
+
+void MainWindow::safetyHandler()
+{
+    if (tank->getLevel() > tank->getMaxLevel())
+        pump->setFlow(0);
+
+    if (tank->getTemperature() > tank->getMaxTemperature())
+        heater->state = Heater::HEATER_OFF;
 }
