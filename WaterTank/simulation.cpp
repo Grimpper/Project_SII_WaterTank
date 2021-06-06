@@ -84,7 +84,7 @@ void Simulation::computeTankTemperature()
     float weightedNumerator= entranceVolume * pump->getPumpTemperature() + tank->getLevel() * tank->getTemperature();
     float weightsSum = entranceVolume + tank->getLevel();
 
-    float entranceTemp = weightsSum != 0 ? weightedNumerator / weightsSum : 0;
+    float entranceTemp = weightsSum > 0 ? weightedNumerator / weightsSum : previousTemp;
     float entranceTempDelta = entranceTemp - previousTemp;
 
     float coolingConstant = computeCoolingConstant();

@@ -72,23 +72,23 @@ void MainWindow::updateDrawing()
 {
     if (!checkPointerInit()) return;
 
-    float level = UnitUtils::getInLiters(tank->getLevel());
-    float temperature = UnitUtils::getInCelsius(tank->getTemperature());
+    float level = tank->getLevel();
+    float temperature = tank->getTemperature();
     float pump = this->pump->getFlow();   
 
     QString str = "Tiempo simulado: " + QString::number((elapsedTimer.elapsed() * simStep + displayTimeUntilLastStop) / 1000.0) + " s";
     ui->label_SimTime->setText(str);
 
-    str = "Temperatura: " + QString::number(temperature) + " ºC";
+    str = "Temperatura: " + QString::number(UnitUtils::getInCelsius(temperature), 'f', 2) + " ºC";
     ui->label_Temp->setText(str);
 
-    str = "Nivel: " + QString::number(level) + " L";
+    str = "Nivel: " + QString::number(UnitUtils::getInLiters(level), 'f', 2) + " L";
     ui->label_Level->setText(str);
 
     //FIXME: make image stretch max level dependent
-    float imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
-    float imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
-    float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
+    float imageWhiteMaskHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
+    float imageWaterFlowHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
+    float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (tank->getMaxTemperature() + 20.0) + 137.0;
 
     if(imageWhiteMaskHeight < 10){
             imageWhiteMaskHeight = 10;
@@ -155,6 +155,7 @@ void MainWindow::updateDrawing()
 void MainWindow::sim()
 {
     simulation->computeStep();
+    safetyHandler();
     updateDrawing();
 }
 
@@ -223,7 +224,9 @@ void MainWindow::start()
                     UnitUtils::getInKelvin(ui->spinBox_MaxTemp->value()),
                     UnitUtils::getInKelvin(ui->spinBox_InitTemp->value()),
                     ui->spinBox_BaseRadius->value(),
-                    UnitUtils::getInKelvin(ui->spinBox_EnviromentalTemp->value()));
+                    UnitUtils::getInKelvin(ui->spinBox_EnviromentalTemp->value()),
+                    UnitUtils::getInCubicMeters(ui->spinBox_Overflow_Threshold->value()),
+                    UnitUtils::getInKelvin(ui->spinBox_Overheat_Threshold->value()));
 
     heater = new Heater(UnitUtils::getInKelvin(ui->spinBox_InitHeaterTemp->value()));
 
@@ -327,4 +330,13 @@ void MainWindow::updateExitAreaLabel(int value)
 void MainWindow::updateBaseAreaLabel(int value)
 {
     ui->label_BaseArea_Value->setText(QString::number(2 * M_PI * value, 'f', 2) + " m^2");
+}
+
+void MainWindow::safetyHandler()
+{
+    if (tank->getLevel() > tank->getMaxLevel())
+        pump->setFlow(0);
+
+    if (tank->getTemperature() > tank->getMaxTemperature())
+        heater->state = Heater::HEATER_OFF;
 }

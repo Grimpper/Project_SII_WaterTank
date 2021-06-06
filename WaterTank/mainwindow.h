@@ -25,7 +25,6 @@ private:
     Ui::MainWindow *ui;
     QSignalMapper* signalMapper;
 
-
     QTimer simulationTimer;
     const unsigned int simulationIntervalMS = 100;
 
@@ -74,5 +73,7 @@ private slots:
 
     void updateExitAreaLabel(int);
     void updateBaseAreaLabel(int);
+
+    void safetyHandler();
 
 };

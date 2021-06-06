@@ -3,6 +3,7 @@
 #include "tank.h"
 
 Tank::Tank()
+    : overflowThreshold(0), overheatThreshold(0)
 {
     level = 0;
     liquidHeight = 0;
@@ -17,8 +18,11 @@ Tank::Tank()
 }
 
 Tank::Tank(float maxLevel, float level, float maxTemperature,
-           float temperature, float baseRadius, float enviromentTemp)
-    : maxLevel(maxLevel), baseRadius(baseRadius), maxTemperature(maxTemperature), enviromentTemp(enviromentTemp)
+           float temperature, float baseRadius, float enviromentTemp,
+           const float overflowThreshold, const float overheatThreshold)
+    : maxLevel(maxLevel), baseRadius(baseRadius), maxTemperature(maxTemperature),
+      enviromentTemp(enviromentTemp), overflowThreshold(overflowThreshold),
+      overheatThreshold(overheatThreshold)
 {
     liquidHeight = 0;
     liquidSurface = 0;
@@ -57,7 +61,7 @@ void Tank::setLevel(float value)
     liquidHeight = level / (M_PI * pow(getBaseRadius(), 2));
     liquidSurface = 2 * M_PI * getBaseRadius() * liquidHeight + 2 * M_PI * pow(getBaseRadius(), 2);
 
-    if (level < maxLevel)
+    if (level < overflowThreshold)
         overflow = false;
     else
         overflow = true;
@@ -77,7 +81,9 @@ void Tank::setTemperature(float value)
 {
     temperature = value;
 
-    if (temperature > maxTemperature)
+    if (temperature < overheatThreshold)
+        overheat = false;
+    else
         overheat = true;
 
 
