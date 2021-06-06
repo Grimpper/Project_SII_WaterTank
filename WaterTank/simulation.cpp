@@ -27,7 +27,7 @@ void Simulation::computeStep()
     computeExitVolume();
 
     computeTankLevel();
-    //computeTankTemperature();
+    computeTankTemperature();
 }
 
 void Simulation::computeEntranceVolume()
@@ -69,14 +69,15 @@ void Simulation::computeTankLevel()
 
 float Simulation::computeCoolingConstant()
 {
-    return 1000 * tank->getLiquidSurface() / (tank->getLevel() * 4.183);
+    float coolingConstant = tank->getLevel() > 0 ? 1000 * tank->getLiquidSurface() / (tank->getLevel() * 4.183) : 0;
+    return coolingConstant;
 }
 
 void Simulation::computeTankTemperature()
 {
     float weightedCoefficient = entranceVolume * pump->getPumpTemperature() + tank->getLevel() * tank->getTemperature();
     float weightsSum = entranceVolume + tank->getLevel();
-    float entranceTempDelta = weightedCoefficient / weightsSum;
+    float entranceTempDelta = weightsSum != 0 ? weightedCoefficient / weightsSum : 0;
 
     float coolingConstant = computeCoolingConstant();
     float ambientTempDelta = -coolingConstant * (tank->getTemperature() - tank->getEnviromentTemp());

@@ -61,6 +61,7 @@ void MainWindow::updateDrawing()
     float temperature = tank->getTemperature();
     float pump = this->pump->getFlow();
 
+    //FIXME: make image stretch max level dependent
     float imageWhiteMaskHeight = level * (10 - 305.0) / 8000.0 + 305;
     float imageWaterFlowHeight = level * (10 - 305.0) / 8000.0 + 305;
     float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (120.0 + 20.0) + 137.0;
