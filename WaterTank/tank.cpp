@@ -5,6 +5,8 @@
 Tank::Tank()
 {
     level = 0;
+    liquidHeight = 0;
+    liquidSurface = 0;
     maxLevel = 0;
     baseRadius = 0;
     temperature = 0;
@@ -14,17 +16,19 @@ Tank::Tank()
     overheat = 0;
 }
 
-Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
-           int temperature, unsigned int baseRadius, int enviromentTemp)
+Tank::Tank(float maxLevel, float level, float maxTemperature,
+           float temperature, float baseRadius, float enviromentTemp)
 {
-    this->setLevel(level);
+    setLevel(level);
+    liquidHeight = 0;
+    liquidSurface = 0;
     this->maxLevel = maxLevel;
     this->baseRadius = baseRadius;
-    this->setTemperature(temperature);
+    setTemperature(temperature);
     this->maxTemperature = maxTemperature;
     this->enviromentTemp = enviromentTemp;
-    this->overflow = 0;
-    this->overheat = 0;
+    overflow = 0;
+    overheat = 0;
 
 #if WT_DEBUG == 1
     QString str = "Tank initialized with:\n";
@@ -41,14 +45,14 @@ Tank::Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
 
 float Tank::getLevel() const
 {
-    return level * 0.997;
+    return level;
 }
 
 void Tank::setLevel(float value)
 {
     level = value;
 
-    liquidHeight = level / (pow(M_PI, 2)* getBaseRadius());
+    liquidHeight = level / (M_PI * pow(getBaseRadius(), 2));
     liquidSurface = 2 * M_PI * liquidHeight;
 
     if (level > maxLevel)
@@ -60,12 +64,12 @@ void Tank::setLevel(float value)
 #endif
 }
 
-int Tank::getTemperature() const
+float Tank::getTemperature() const
 {
     return temperature;
 }
 
-void Tank::setTemperature(int value)
+void Tank::setTemperature(float value)
 {
     temperature = value;
 
@@ -89,32 +93,32 @@ bool Tank::getOverflow() const
     return overflow;
 }
 
-unsigned int Tank::getMaxLevel() const
+float Tank::getMaxLevel() const
 {
     return maxLevel;
 }
 
-unsigned int Tank::getBaseRadius() const
+float Tank::getBaseRadius() const
 {
     return baseRadius;
 }
 
-int Tank::getMaxTemperature() const
+float Tank::getMaxTemperature() const
 {
     return maxTemperature;
 }
 
-int Tank::getEnviromentTemp() const
+float Tank::getEnviromentTemp() const
 {
     return enviromentTemp;
 }
 
-unsigned int Tank::getLiquidHeight() const
+float Tank::getLiquidHeight() const
 {
     return liquidHeight;
 }
 
-unsigned int Tank::getLiquidSurface() const
+float Tank::getLiquidSurface() const
 {
     return liquidSurface;
 }

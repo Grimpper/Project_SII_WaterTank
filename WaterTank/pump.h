@@ -4,17 +4,17 @@ class Pump
 {
 public:
     Pump();
-    Pump(unsigned int maxFlow, int pumpTemperature);
+    Pump(float maxFlow, float pumpTemperature);
 
-    unsigned int getFlow() const;
-    void setFlow(unsigned int value);
+    float getFlow() const;
+    void setFlow(float value);
 
-    int getPumpTemperature() const;
-    void setPumpTemperature(int value);
+    float getPumpTemperature() const;
+    void setPumpTemperature(float value);
 
-    unsigned int getMaxFlow() const;
+    float getMaxFlow() const;
 
 private:
-    unsigned int maxFlow, flow;
-    int pumpTemperature;
+    float maxFlow, flow;
+    float pumpTemperature;
 };

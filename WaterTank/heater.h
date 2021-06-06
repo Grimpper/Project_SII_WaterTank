@@ -4,7 +4,7 @@ class Heater
 {
 public:
    Heater();
-   Heater(int initHeaterTemp);
+   Heater(float initHeaterTemp);
 
     enum EnumHeater
     {
@@ -12,5 +12,5 @@ public:
       HEATER_ON
     } state;
 
-    int temp;
+    float temp;
 };

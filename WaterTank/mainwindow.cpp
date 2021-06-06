@@ -129,7 +129,7 @@ void MainWindow::updateDrawing()
 
 void MainWindow::sim()
 {
-    simulation->computeStep();
+    //simulation->computeStep();
     updateDrawing();
 }
 
@@ -186,14 +186,16 @@ void MainWindow::start()
 
     if (checkPointerInit()) return;
 
-    setEnableConfig(false);
 
     pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
     valve = new Valve(ui->spinBox_ExitRadius->value(), ui->spinBox_ExitConnection->value());
-    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value() * 0.001, ui->spinBox_MaxTemp->value(),
+    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
                     ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
     heater = new Heater(ui->spinBox_InitHeaterTemp->value());
     simulation = new Simulation(tank, pump, valve, heater, getTimestep());
+
+    ui->horizontalSlider_Flow->setMaximum(pump->getMaxFlow() * 10);
+    setEnableConfig(false);
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STARTED";
@@ -222,7 +224,13 @@ void MainWindow::reset()
 
 void MainWindow::flowChanged(int flow)
 {
-    pump->setFlow(flow);
+    pump->setFlow(flow / 10.0);
+
+    QString str = "Caudal: " + QString::number(pump->getFlow()) + " L/s";
+    ui->label_PumpFlow->setText(str);
+
+    str = "Porcentaje: " + QString::number(flow / (float)ui->horizontalSlider_Flow->maximum() * 100) + " %";
+    ui->label_PumpPercentage->setText(str);
 
 #if WT_DEBUG == 1
     qDebug() << "setFlow = " + QString::number(pump->getFlow());

@@ -7,14 +7,14 @@ Heater::Heater()
     temp = 0 ;
 }
 
-Heater::Heater(int initTemp)
+Heater::Heater(float temp)
 {
     state = HEATER_OFF;
-    this->temp = initTemp;
+    this->temp = temp;
 
 #if WT_DEBUG == 1
     QString str = "Heater initialized with:\n";
-    str += "initTemp = " + QString::number(initTemp) + "\n";
+    str += "initTemp = " + QString::number(temp) + "\n";
     qDebug().noquote() << str;
 #endif
 }
