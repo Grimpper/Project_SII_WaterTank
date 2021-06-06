@@ -9,6 +9,7 @@ Simulation::Simulation(Tank*& tank, Pump*& pump, Valve*& valve, Heater*& heater,
     entranceVolume = 0;
     exitVolume = 0;
     outputValveFlow = 0;
+    previousTemp = tank->getTemperature();
 
 #if WT_DEBUG == 1
     QString str = "Simulation initialized with:\n";
@@ -74,12 +75,12 @@ void Simulation::computeTankLevel()
 
 float Simulation::computeCoolingConstant()
 {
-    float coolingConstant = tank->getLevel() > 0 ? 1000 * tank->getLiquidSurface() / (tank->getLevel() * 0.997 * 4.183) : 0;
+    float coolingConstant = tank->getLevel() > 0 ? 1000 * tank->getLiquidSurface() / (tank->getLevel() * 997000 * 4.183) : 0;
     return coolingConstant;
 }
 
 void Simulation::computeTankTemperature()
-{/*
+{
     float weightedNumerator= entranceVolume * pump->getPumpTemperature() + tank->getLevel() * tank->getTemperature();
     float weightsSum = entranceVolume + tank->getLevel();
 
@@ -94,10 +95,6 @@ void Simulation::computeTankTemperature()
 
 
     float totalTempDelta = step * (entranceTempDelta + ambientTempDelta + heaterTempDelta);
-    */
-
-    float ambientTempDelta = -1 * (tank->getTemperature() - tank->getEnviromentTemp());
-    float totalTempDelta = step * ambientTempDelta;
 
     tank->setTemperature(tank->getTemperature() + totalTempDelta);
 

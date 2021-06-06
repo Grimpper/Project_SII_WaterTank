@@ -225,7 +225,7 @@ void MainWindow::start()
                     ui->spinBox_BaseRadius->value(),
                     UnitUtils::getInKelvin(ui->spinBox_EnviromentalTemp->value()));
 
-    heater = new Heater(ui->spinBox_InitHeaterTemp->value());
+    heater = new Heater(UnitUtils::getInKelvin(ui->spinBox_InitHeaterTemp->value()));
 
     simulation = new Simulation(tank, pump, valve, heater, getTimestep());
 
