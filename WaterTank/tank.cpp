@@ -1,5 +1,6 @@
-#include "tank.h"
 #include <QDebug>
+#include <math.h>
+#include "tank.h"
 
 Tank::Tank()
 {
@@ -47,6 +48,9 @@ void Tank::setLevel(unsigned int value)
 {
     level = value;
 
+    liquidHeight = level / (pow(M_PI, 2)* getBaseRadius());
+    liquidSurface = 2 * M_PI * liquidHeight;
+
     if (level > maxLevel)
         overflow = true;
 }
@@ -92,4 +96,14 @@ int Tank::getMaxTemperature() const
 int Tank::getEnviromentTemp() const
 {
     return enviromentTemp;
+}
+
+unsigned int Tank::getLiquidHeight() const
+{
+    return liquidHeight;
+}
+
+unsigned int Tank::getLiquidSurface() const
+{
+    return liquidSurface;
 }

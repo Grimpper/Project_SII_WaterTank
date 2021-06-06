@@ -20,7 +20,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QTimer* drawTimer;
+    QTimer* simulationTimer;
 
     Tank* tank = nullptr;
 
@@ -40,6 +40,8 @@ private slots:
     void start();
     void pause();
     void reset();
+
+    void flowChanged(int);
 
     void setValveState();
     void setHeaterState();

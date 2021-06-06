@@ -24,9 +24,12 @@ public:
 
     int getEnviromentTemp() const;
 
+    unsigned int getLiquidHeight() const;
+    unsigned int getLiquidSurface() const;
+
 private:
-    unsigned int maxLevel, level;
-    unsigned int baseRadius;
+    unsigned int maxLevel, level, liquidHeight;
+    unsigned int baseRadius, liquidSurface;
 
     int maxTemperature, enviromentTemp, temperature;
 

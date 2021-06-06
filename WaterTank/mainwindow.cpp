@@ -29,10 +29,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::connectQtElements()
 {
-    //  SIMULATION BUTTONS  //
+    //  SIMULATION CONTROLS  //
     connect(ui->pushButton_Start, SIGNAL(clicked()), this, SLOT(start()));
     connect(ui->pushButton_Pause, SIGNAL(clicked()), this, SLOT(pause()));
     connect(ui->pushButton_Reset, SIGNAL(clicked()), this, SLOT(reset()));
+
+    connect(ui->horizontalSlider_Flow, SIGNAL(valueChanged(int)), this, SLOT(flowChanged(int)));
 
     //  VALVE BUTTONS  //
     connect(ui->pushButton_Valve_Close, SIGNAL(clicked()), this, SLOT(setValveState()));
@@ -48,7 +50,6 @@ void MainWindow::connectQtElements()
 
     // TIMER //
     drawTimer->setInterval(100);
-    drawTimer->setSingleShot(false);
     connect(drawTimer, SIGNAL(timeout()), this, SLOT(setDrawing()));
 }
 
@@ -147,7 +148,7 @@ void MainWindow::setEnableConfig(bool state)
     ui->groupBox_Heater_Config->setEnabled(state);
     ui->groupBox_Enviroment_Config->setEnabled(state);
 
-    ui->groupBox_Pump->setEnabled(!state);
+    ui->groupBox_Controls->setEnabled(!state);
     ui->groupBox_Valve->setEnabled(!state);
     ui->groupBox_Heater->setEnabled(!state);
 }
@@ -187,6 +188,15 @@ void MainWindow::reset()
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION RESETED";
+#endif
+}
+
+void MainWindow::flowChanged(int flow)
+{
+    pump->setFlow(flow);
+
+#if WT_DEBUG == 1
+    qDebug() << "setFlow = " + QString::number(pump->getFlow());
 #endif
 }
 
