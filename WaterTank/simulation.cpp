@@ -30,6 +30,11 @@ void Simulation::computeStep()
     computeTankTemperature();
 }
 
+void Simulation::setStep(float value)
+{
+    step = value;
+}
+
 void Simulation::computeEntranceVolume()
 {
     entranceVolume = pump->getFlow() * step;
@@ -69,14 +74,12 @@ void Simulation::computeTankLevel()
 
 float Simulation::computeCoolingConstant()
 {
-    float coolingConstant = tank->getLevel() > 0 ? 1000 * tank->getLiquidSurface() / (tank->getLevel() * 4.183) : 0;
+    float coolingConstant = tank->getLevel() > 0 ? 1000 * tank->getLiquidSurface() / (tank->getLevel() * 0.997 * 4.183) : 0;
     return coolingConstant;
 }
 
 void Simulation::computeTankTemperature()
-{
-    static float previousTemp;
-
+{/*
     float weightedNumerator= entranceVolume * pump->getPumpTemperature() + tank->getLevel() * tank->getTemperature();
     float weightsSum = entranceVolume + tank->getLevel();
 
@@ -91,6 +94,10 @@ void Simulation::computeTankTemperature()
 
 
     float totalTempDelta = step * (entranceTempDelta + ambientTempDelta + heaterTempDelta);
+    */
+
+    float ambientTempDelta = -1 * (tank->getTemperature() - tank->getEnviromentTemp());
+    float totalTempDelta = step * ambientTempDelta;
 
     tank->setTemperature(tank->getTemperature() + totalTempDelta);
 

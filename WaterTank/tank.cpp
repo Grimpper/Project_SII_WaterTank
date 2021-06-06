@@ -55,7 +55,7 @@ void Tank::setLevel(float value)
         level = value;
 
     liquidHeight = level / (M_PI * pow(getBaseRadius(), 2));
-    liquidSurface = 2 * M_PI * getBaseRadius() * liquidHeight;
+    liquidSurface = 2 * M_PI * getBaseRadius() * liquidHeight + 2 * M_PI * pow(getBaseRadius(), 2);
 
     if (level < maxLevel)
         overflow = false;

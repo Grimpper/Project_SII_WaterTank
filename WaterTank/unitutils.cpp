@@ -14,3 +14,13 @@ float UnitUtils::getInLiters(float cubicMeters)
 {
     return cubicMeters * 1000;
 }
+
+float UnitUtils::getInKelvin(float celsius)
+{
+    return celsius + 273;
+}
+
+float UnitUtils::getInCelsius(float kelvin)
+{
+    return kelvin - 273;
+}

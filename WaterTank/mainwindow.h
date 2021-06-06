@@ -2,6 +2,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QElapsedTimer>
+#include <QSignalMapper>
 #include "tank.h"
 #include "pump.h"
 #include "valve.h"
@@ -21,8 +23,22 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QTimer* simulationTimer;
+    QSignalMapper* signalMapper;
+
+
+    QTimer simulationTimer;
     const unsigned int simulationIntervalMS = 100;
+
+    QElapsedTimer elapsedTimer;
+    int displayTimeUntilLastStop = 0;
+
+    enum EnumSimStep
+    {
+        x1 = 1,
+        x2 = 2,
+        x5 = 5,
+        x10 = 10
+    } simStep = EnumSimStep::x1;
 
     Tank* tank = nullptr;
 
@@ -49,6 +65,7 @@ private slots:
     void pause();
     void reset();
 
+    void setTimestep(int);
     void flowChanged(int);
     void tempChanged(int);
 

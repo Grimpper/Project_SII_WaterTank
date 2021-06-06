@@ -17,9 +17,11 @@ public:
 
     void computeStep();
 
+    void setStep(float value);
+
 private:
     float entranceVolume, exitVolume, outputValveFlow;
-    float step, gravity;
+    float step, gravity, previousTemp;
 
     void computeEntranceVolume();
 
