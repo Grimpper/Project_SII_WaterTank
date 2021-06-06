@@ -8,27 +8,18 @@
 class Simulation
 {
 public:
-    Simulation(Tank*& tank, Pump*& pump, Valve*& valve, Heater*& heater, float gravity = 9.8);
+    Simulation(Tank*& tank, Pump*& pump, Valve*& valve, Heater*& heater, float step, float gravity = 9.8);
 
     Tank* tank;
     Pump* pump;
     Valve* valve;
     Heater* heater;
 
-    float gravity;
-
-    enum SimulationStep
-    {
-        x1 = 1,
-        x2 = 2,
-        x5 = 5,
-        x10 = 10
-    } step;
-
     void computeStep();
 
 private:
     float entranceVolume, exitVolume, outputValveFlow;
+    float step, gravity;
 
     void computeEntranceVolume();
 

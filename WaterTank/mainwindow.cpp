@@ -6,7 +6,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), drawTimer(new QTimer)
+    , ui(new Ui::MainWindow), simulationTimer(new QTimer)
 {
     ui->setupUi(this);
 
@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete drawTimer;
+    delete simulationTimer;
 
     deletePointerMembers();
 }
@@ -49,13 +49,13 @@ void MainWindow::connectQtElements()
     connect(ui->spinBox_BaseRadius, SIGNAL(valueChanged(int)), this, SLOT(updateBaseAreaLabel(int)));
 
     // TIMER //
-    drawTimer->setInterval(100);
-    connect(drawTimer, SIGNAL(timeout()), this, SLOT(setDrawing()));
+    simulationTimer->setInterval(simulationIntervalMS);
+    connect(simulationTimer, SIGNAL(timeout()), this, SLOT(sim()));
 }
 
-void MainWindow::setDrawing()
+void MainWindow::updateDrawing()
 {
-    if (!tank || !pump || !valve || !heater) return;
+    if (!checkPointerInit()) return;
 
     unsigned int level = tank->getLevel();
     int temperature = tank->getTemperature();
@@ -127,17 +127,30 @@ void MainWindow::setDrawing()
     }
 }
 
+void MainWindow::sim()
+{
+    simulation->computeStep();
+    updateDrawing();
+}
+
+bool MainWindow::checkPointerInit()
+{
+    return tank || pump || valve || heater || simulation;
+}
+
 void MainWindow::deletePointerMembers()
 {
     delete tank;
     delete pump;
     delete valve;
     delete heater;
+    delete simulation;
 
     tank = nullptr;
     pump = nullptr;
     valve = nullptr;
     heater = nullptr;
+    simulation = nullptr;
 }
 
 void MainWindow::setEnableConfig(bool state)
@@ -153,19 +166,34 @@ void MainWindow::setEnableConfig(bool state)
     ui->groupBox_Heater->setEnabled(!state);
 }
 
+float MainWindow::getTimestep()
+{
+    float step = simulationIntervalMS / 1000.0;
+
+    if (ui->radioButton_x2->isChecked())
+        step *= 2;
+    else if (ui->radioButton_x5->isChecked())
+        step *= 5;
+    else if (ui->radioButton_x10->isChecked())
+        step *= 10;
+
+    return step;
+}
+
 void MainWindow::start()
 {
-    drawTimer->start();
+    simulationTimer->start();
 
-    if (tank || pump || valve || heater) return;
+    if (checkPointerInit()) return;
 
     setEnableConfig(false);
 
     pump = new Pump(ui->spinBox_EntranceFlow->value(), ui->spinBox_EntranceTemp->value());
     valve = new Valve(ui->spinBox_ExitRadius->value(), ui->spinBox_ExitConnection->value());
-    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value(), ui->spinBox_MaxTemp->value(),
+    tank = new Tank(ui->spinBox_MaxLevel->value(), ui->spinBox_InitLevel->value() * 0.001, ui->spinBox_MaxTemp->value(),
                     ui->spinBox_InitTemp->value(), ui->spinBox_BaseRadius->value(), ui->spinBox_EnviromentalTemp->value());
     heater = new Heater(ui->spinBox_InitHeaterTemp->value());
+    simulation = new Simulation(tank, pump, valve, heater, getTimestep());
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STARTED";
@@ -174,7 +202,7 @@ void MainWindow::start()
 
 void MainWindow::pause()
 {
-    drawTimer->stop();
+    simulationTimer->stop();
 
 #if WT_DEBUG == 1
     qDebug() << "SIMULATION STOPPED";
@@ -183,6 +211,7 @@ void MainWindow::pause()
 
 void MainWindow::reset()
 {
+    simulationTimer->stop();
     deletePointerMembers();
     setEnableConfig(true);
 

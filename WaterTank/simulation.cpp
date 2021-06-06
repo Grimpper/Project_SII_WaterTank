@@ -1,10 +1,18 @@
 #include "simulation.h"
 #include <math.h>
+#include <QString>
+#include <QDebug>
 
-Simulation::Simulation(Tank*& tank, Pump*& pump, Valve*& valve, Heater*& heater, float gravity)
-    : tank(tank), pump(pump), valve(valve), heater(heater), gravity(gravity)
+Simulation::Simulation(Tank*& tank, Pump*& pump, Valve*& valve, Heater*& heater, float step, float gravity)
+    : tank(tank), pump(pump), valve(valve), heater(heater), step(step), gravity(gravity)
 {
+#if WT_DEBUG == 1
+    QString str = "Simulation initialized with:\n";
+    str += "step = " + QString::number(step) + "\n";
+    str += "gravity = " + QString::number(gravity) + "\n";
 
+    qDebug().noquote() << str;
+#endif
 }
 
 void Simulation::computeStep()
@@ -39,11 +47,18 @@ void Simulation::computeExitVolume()
 void Simulation::computeTankLevel()
 {
     tank->setLevel(tank->getLevel() + entranceVolume - exitVolume);
+
+#if WT_DEBUG == 1
+    QString str = "entranceVolume = " + QString::number(entranceVolume) + "\n";
+    str += "exitVolume = " + QString::number(exitVolume) + "\n";
+
+    qDebug().noquote() << str;
+#endif
 }
 
 float Simulation::computeCoolingConstant()
 {
-    return 1000 * tank->getLiquidSurface() / (0.997 * tank->getLevel() * 4.183);
+    return 1000 * tank->getLiquidSurface() / (tank->getLevel() * 4.183);
 }
 
 void Simulation::computeTankTemperature()

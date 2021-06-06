@@ -7,8 +7,8 @@ public:
     Tank(unsigned int maxLevel, unsigned int level, int maxTemperature,
          int temperature, unsigned int baseRadius, int enviromentTemp);
 
-    unsigned int getLevel() const;
-    void setLevel(unsigned int value);
+    float getLevel() const;
+    void setLevel(float value);
 
     int getTemperature() const;
     void setTemperature(int value);
@@ -28,7 +28,8 @@ public:
     unsigned int getLiquidSurface() const;
 
 private:
-    unsigned int maxLevel, level, liquidHeight;
+    unsigned int maxLevel, liquidHeight;
+    float level;
     unsigned int baseRadius, liquidSurface;
 
     int maxTemperature, enviromentTemp, temperature;
