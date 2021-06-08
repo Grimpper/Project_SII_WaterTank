@@ -85,7 +85,6 @@ void MainWindow::updateDrawing()
     str = "Nivel: " + QString::number(UnitUtils::getInLiters(level), 'f', 2) + " L";
     ui->label_Level->setText(str);
 
-    //FIXME: make image stretch max level dependent
     float imageWhiteMaskHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
     float imageWaterFlowHeight = level * (10 - 305.0) / tank->getMaxLevel() + 305;
     float imageThermometerMaskHeight = (temperature + 20) * -137.0 / (tank->getMaxTemperature() + 20.0) + 137.0;
@@ -194,16 +193,7 @@ void MainWindow::setEnableConfig(bool state)
 
 float MainWindow::getTimestep()
 {
-    float step = simulationIntervalMS / 1000.0;
-
-    if (ui->radioButton_x2->isChecked())
-        step *= 2;
-    else if (ui->radioButton_x5->isChecked())
-        step *= 5;
-    else if (ui->radioButton_x10->isChecked())
-        step *= 10;
-
-    return step;
+    return simStep * simulationIntervalMS / 1000.0;
 }
 
 void MainWindow::start()
@@ -266,11 +256,14 @@ void MainWindow::reset()
 
 void MainWindow::setTimestep(int step)
 {
+
     displayTimeUntilLastStop += elapsedTimer.elapsed() * simStep;
     elapsedTimer.start();
 
     simStep = (EnumSimStep) step;
-    simulation->setStep(step);
+
+    if (!checkPointerInit()) return;
+    simulation->setStep(getTimestep());
 
 #if WT_DEBUG == 1
     qDebug() << "Checked = " + QString::number(step);
